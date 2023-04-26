@@ -6,22 +6,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class Validad_Resultados {
+public class AgregarCarrito {
 
-
-    /*
-
-    * Realizar el Login Incorrectamente:
-    1. Ir a la pagina https://www.saucedemo.com/
-    2. Escribir username Standard_use (introducirlo mal para forzar error)
-    3. Escribir password secret sauce
-    4. Pulsar Boton Login
-    5. Validar que el numero de productos mostrados es igual a 6
-
-     */
 
     public static void main(String[] arg) throws InterruptedException{
 // Paso Inicial
@@ -51,15 +38,21 @@ public class Validad_Resultados {
         buttonLogin.click();
 
 // Step 5
-        String actualUrl = driver.getCurrentUrl();
+        WebElement buttonAdd = driver.findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-bolt-t-shirt']"));
+        buttonAdd.click();
 
-        if("https://www.saucedemo.com/inventory.html".equals(actualUrl)) {
-            System.out.println("La URL actual y la esperada son correctas. " + "URL Actual = " + actualUrl +
-                    " URL Esperada = https://www.saucedemo.com/inventory.html");
-        } else {
-            System.out.println("Error detectado, La url actual no corresponde con la esperada: "+ "URL Actual = " + actualUrl +
-                    " URL Esperada = https://www.saucedemo.com/inventory.html");
+// Step 6
+
+        String carrito = driver.findElement(By.xpath("//span[@class='shopping_cart_badge']")).getText();
+
+        String carritoCorrecto = "1";
+
+        if (carrito.equals(carritoCorrecto)){
+            System.out.println("El Carrito el correcto");
+        }else {
+            System.out.println("El carrito es incorrecto");
         }
+
 
         driver.close();
     }
