@@ -13,7 +13,7 @@ public class ComandosNavegador {
 
     public static void main(String[] arg) throws InterruptedException{
 
-       //PASO 1
+       //PASO 1 levantar el driver
         WebDriver driver ;
         WebDriverManager.firefoxdriver().setup();
         FirefoxOptions firefoxOptions = new FirefoxOptions();
@@ -21,7 +21,7 @@ public class ComandosNavegador {
         driver = new FirefoxDriver(firefoxOptions);
         driver.manage().window().maximize();
 
-        //PASO 2
+        //PASO 2 acceso a la pagina
         driver.get("https://www.saucedemo.com/");
 
         //PASO 3
