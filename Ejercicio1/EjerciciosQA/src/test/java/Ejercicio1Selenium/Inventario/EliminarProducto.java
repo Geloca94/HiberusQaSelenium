@@ -6,24 +6,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
-import java.util.List;
-
-public class Validad_Resultados {
-
-
-    /*
-
-    * Realizar el Login Incorrectamente:
-    1. Ir a la pagina https://www.saucedemo.com/
-    2. Escribir username Standard_use (introducirlo mal para forzar error)
-    3. Escribir password secret sauce
-    4. Pulsar Boton Login
-    5. Validar que el numero de productos mostrados es igual a 6
-
-     */
+public class EliminarProducto {
 
     public static void main(String[] arg) throws InterruptedException{
 // Paso Inicial
@@ -53,18 +37,22 @@ public class Validad_Resultados {
         buttonLogin.click();
 
 // Step 5
+        WebElement buttonAdd = driver.findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-bolt-t-shirt']"));
+        buttonAdd.click();
 
-        List<WebElement> elementos = driver.findElements(By.xpath("//div[@class='inventory_item']"));
-        int cantidad = elementos.size();
+// Step 6
 
-        if (cantidad != 6){
-            System.out.println("No hay 6 objetos en el inventario");
+        String remove = driver.findElement(By.xpath("//button[@id='remove-sauce-labs-bolt-t-shirt']")).getText();
 
+        String removeCorrecto = "Remove";
+
+        if (remove.equals(removeCorrecto)){
+            System.out.println("El boton de remove es el correcto");
         }else {
-            System.out.println("Hay 6 objetis en el inventario");
+            System.out.println("El boton de remove es incorrecto");
         }
+
 
         driver.close();
     }
-
 }
