@@ -21,36 +21,35 @@ public class AgregarCarrito {
         driver.manage().window().maximize();
 
 
-// Step 1
+        // Step 1 Acceso a la pagina web
         driver.get("https://www.saucedemo.com/");
 
-// Step 2
+        // Step 2 Introducion de Username
 
         WebElement username = driver.findElement(By.xpath("//input[@data-test='username']"));
         username.sendKeys("standard_user");
 
-// Step 3
+        // Step 3 Introduccion de contraseña
         WebElement password = driver.findElement(By.xpath("//input[@data-test='password']"));
         password.sendKeys("secret_sauce");
 
-// Step 4
+        // Step 4 Apretar Boton Login
         WebElement buttonLogin = driver.findElement(By.xpath("//input[@data-test='login-button']"));
         buttonLogin.click();
 
-// Step 5
+        // Step 5 Agregar al carrito un producto
         WebElement buttonAdd = driver.findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-bolt-t-shirt']"));
         buttonAdd.click();
 
-// Step 6
-
+        //Step 6 Comprobacion de que el carrito  tiene el objeto
         String carrito = driver.findElement(By.xpath("//span[@class='shopping_cart_badge']")).getText();
 
         String carritoCorrecto = "1";
 
         if (carrito.equals(carritoCorrecto)){
-            System.out.println("El Carrito el correcto");
+            System.out.println("El Carrito muestra la cantidad correcta: " + carrito + " Cantidad Esperada: "+ carritoCorrecto);
         }else {
-            System.out.println("El carrito es incorrecto");
+            System.out.println("El Carrito muestra la cantidad Incorrecta: \" + carrito + \" Cantidad Esperada: \"+ carritoCorrecto");
         }
 
 
