@@ -1,4 +1,4 @@
-package EjerciciosSelenium;
+package Ejercicio1Selenium.Inventario;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
@@ -7,16 +7,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class Login_Incorrecto {
+public class Validad_Resultados {
 
-     /*
+
+    /*
 
     * Realizar el Login Incorrectamente:
     1. Ir a la pagina https://www.saucedemo.com/
     2. Escribir username Standard_use (introducirlo mal para forzar error)
     3. Escribir password secret sauce
     4. Pulsar Boton Login
-    5. Validar que aparece mensaje de error
+    5. Validar que el numero de productos mostrados es igual a 6
 
      */
 
@@ -37,7 +38,7 @@ public class Login_Incorrecto {
 // Step 2
 
         WebElement username = driver.findElement(By.xpath("//input[@data-test='username']"));
-        username.sendKeys("standar_user");
+        username.sendKeys("standard_user");
 
 // Step 3
         WebElement password = driver.findElement(By.xpath("//input[@data-test='password']"));
@@ -58,9 +59,7 @@ public class Login_Incorrecto {
                     " URL Esperada = https://www.saucedemo.com/inventory.html");
         }
 
-        driver.close();
+        //driver.close();
     }
-
-
 
 }

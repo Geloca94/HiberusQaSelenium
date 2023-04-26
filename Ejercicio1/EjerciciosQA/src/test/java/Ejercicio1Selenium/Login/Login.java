@@ -1,4 +1,4 @@
-package EjerciciosSelenium;
+package Ejercicio1Selenium.Login;
 
 
 import io.github.bonigarcia.wdm.WebDriverManager;
