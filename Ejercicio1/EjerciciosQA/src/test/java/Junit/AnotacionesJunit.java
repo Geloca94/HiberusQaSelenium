@@ -29,13 +29,23 @@ public class AnotacionesJunit {
     }
 
     @Test
-    public  void test2(){
-        System.out.println("TEST2");
+    public void testSumar(){
+
+        Assert.assertEquals("El resultado esta mal : ", (1 + 1), 2);
     }
 
     @Test
-    public  void test3(){
-        System.out.println("TEST3");
+    public void testAssertFalse(){
+
+        Assert.assertFalse(false);
+
+        //Con true peta tienes que ponerle false puede usarse para validar checkbox
+    }
+
+
+    @Test
+    public  void test2(){
+        System.out.println("TEST2");
     }
 
     @After
