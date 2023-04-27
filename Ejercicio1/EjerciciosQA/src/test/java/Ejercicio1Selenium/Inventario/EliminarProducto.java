@@ -2,6 +2,7 @@ package Ejercicio1Selenium.Inventario;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -46,10 +47,15 @@ public class EliminarProducto {
 
         String removeCorrecto = "Remove";
 
+        try{
         if (remove.equals(removeCorrecto)){
             System.out.println("El boton de remove es el correcto");
         }else {
             System.out.println("El boton de remove es incorrecto");
+        }
+        } catch (TimeoutException timeoutException){
+            System.out.println("No Carga el elemento");
+
         }
 
 

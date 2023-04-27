@@ -2,6 +2,7 @@ package Ejercicio1Selenium.Inventario;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -41,23 +42,20 @@ public class ComprobacionCarrito {
         buttonAdd.click();
 
 
-
         //Step 6 Comprobamos que aperece el boton Remove
         String removeText = driver.findElement(By.xpath("//button[@id='remove-sauce-labs-bolt-t-shirt']")).getText();
 
         // Step 7 Comprobamos que al pulsar el boton remove este desaparece
-
         WebElement buttonRemove = driver.findElement(By.xpath("//button[@id='remove-sauce-labs-bolt-t-shirt']"));
         buttonRemove.click();
 
 
-        String buttonAddText = driver.findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-bolt-t-shirt']")).getText();
+        try{
+            WebElement carritoVacio =driver.findElement( By.xpath("//span[@class='shopping_cart_badge']"));
+            System.out.println("El Boton remove no funciona");
+        } catch ( NoSuchElementException erroCar){
+            System.out.println("Carrito Vacio");
 
-
-        if (removeText.equals(buttonAddText)){
-            System.out.println("El Boton de Remove si aparece");
-        }else {
-            System.out.println("El Boton de Remove ya no aparece");
         }
 
 
