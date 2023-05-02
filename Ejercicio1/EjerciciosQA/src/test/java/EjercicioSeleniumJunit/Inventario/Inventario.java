@@ -64,7 +64,7 @@ public class Inventario {
 
 
     }
-    //@Test
+
     @Test
     public void validationNumeroResultados(){
 
@@ -121,9 +121,6 @@ public class Inventario {
 
         //Paso 2
         String carrito = driver.findElement(By.xpath("//span[@class='shopping_cart_badge']")).getText();
-
-
-
 
 
         try{
