@@ -2,6 +2,7 @@ package EjercicioSeleniumJunit.Inventario;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
+import jdk.nashorn.internal.ir.CatchNode;
 import org.junit.*;
 import org.junit.experimental.theories.suppliers.TestedOn;
 import org.openqa.selenium.By;
@@ -10,15 +11,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import EjercicioSeleniumJunit.Login.LoginAceso;
 
 
 import java.sql.SQLOutput;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.sql.Time;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class Inventario {
@@ -74,17 +75,12 @@ public class Inventario {
         List<WebElement> elementos = driver.findElements(By.xpath("//div[@class='inventory_item']"));
 
         //Paso 2
-        try{
-
             int cantidad = elementos.size();
             int cantidadEsperada = 6;
 
-            Assert.assertEquals( cantidadEsperada,cantidad);
-            System.out.println("La cantidad esperada es: " + cantidadEsperada);
-            System.out.println("La cantidad en el carrito obtenida es : " + cantidad);
-        } catch (AssertionError e){
-            System.out.println("La cantidad es incorrecta, cantidad obtenida es incorrecta " );
-        }
+            Assert.assertEquals("Error la cantidad no corresponde con lo espereado: ", cantidadEsperada,cantidad);
+
+
 
 
 
@@ -92,25 +88,22 @@ public class Inventario {
     @Test
     public void validationProducto(){
 
-        boolean isPresent = false;
+
 
         String camisetaEsperada = "Sauce Labs Bolt T-Shirt";
 
         List<WebElement> listaProducto= driver.findElements(By.xpath("//div[@class='inventory_item_name']"));
 
+        boolean isPresent = false;
+
         for(int i = 0; i < listaProducto.size(); i++){
 
            if( listaProducto.get(i).getText().equals(camisetaEsperada)){
                isPresent = true;
-           }else {
-               isPresent = false;
            }
         }
 
         Assert.assertTrue("El Resultado es ", isPresent);
-        Assert.assertFalse("El Resultado es ", isPresent);
-
-
 
     }
 
@@ -127,22 +120,13 @@ public class Inventario {
         //Paso 2
         String carrito = driver.findElement(By.xpath("//span[@class='shopping_cart_badge']")).getText();
 
-
-        try{
-
             //Paso 3
             String carritoCorrecto = "1";
 
-            Assert.assertEquals( carritoCorrecto,carrito);
-            System.out.println("La cantidad esperada es: " + carritoCorrecto);
-            System.out.println("La cantidad en el carrito obtenida es : " + carrito);
-        } catch (AssertionError e){
-            System.out.println("La cantidad es incorrecta, cantidad obtenida: " + carrito);
-        }
+            Assert.assertEquals( "Error, la cantidad no corresponde con el carrito ",carritoCorrecto,carrito);
 
 
     }
-
 
 
     @Test
@@ -157,18 +141,11 @@ public class Inventario {
         WebElement remove = driver.findElement(By.xpath("//button[@id='remove-sauce-labs-bolt-t-shirt']"));
         remove.click();
 
-        String carrito = driver.findElement(By.xpath("//span[@class='shopping_cart_badge']")).getText();
+        try {
+            WebElement carrito = driver.findElement(By.xpath("//span[@class='shopping_cart_badge']"));
+        }catch (NoSuchElementException we) {
 
-
-        try{
-
-            String carritoCorrecto = "0";
-
-            Assert.assertEquals( carritoCorrecto,carrito);
-            System.out.println("La cantidad esperada es: " + carritoCorrecto);
-            System.out.println("La cantidad en el carrito obtenida es : " + carrito);
-        } catch (AssertionError e){
-            System.out.println("La cantidad es incorrecta, cantidad obtenida: " + carrito);
+            Assert.fail("ERROR, el carrito no esta vacio");
         }
 
 
@@ -195,7 +172,7 @@ public class Inventario {
         //Almaceno el numero ramdon en 3 variables para realizar la compra
         int item1 = 0, item2 = 0, item3 = 0;
         int i = 1;
-        for (Integer num : set) {
+        for (int num : set) {
             if (i == 1) {
                 item1 = num;
             } else if (i == 2) {
@@ -220,18 +197,12 @@ public class Inventario {
         String carrito = driver.findElement(By.xpath("//span[@class='shopping_cart_badge']")).getText();
 
 
-        try{
 
             //Paso 4 compruebo que esten  los 3 items
             String carritoCorrecto = "3";
 
-            Assert.assertEquals( carritoCorrecto,carrito);
-            System.out.println("La cantidad esperada es: " + carritoCorrecto);
-            System.out.println("La cantidad en el carrito obtenida es : " + carrito);
-        } catch (AssertionError e){
-            System.out.println("La cantidad es incorrecta, cantidad obtenida: " + carrito);
+            Assert.assertEquals( "Error, la cantidad no corresponde con el carrito ",carritoCorrecto,carrito);
 
-        }
 
         /*
 
@@ -261,27 +232,25 @@ public class Inventario {
     @Test
     public void alphabetic(){
 
-        //Paso 1
-        WebElement  filtro = driver.findElement(By.xpath("//select[@data-test='product_sort_container']"));
-        filtro.click();
-        WebElement  opction = driver.findElement(By.xpath("//option[@value='az']"));
-        opction.click();
+        //Paso 1 hago click
+        driver.findElement(By.xpath("//select[@data-test='product_sort_container']")).click();
+        driver.findElement(By.xpath("//option[@value='za']")).click();
 
-        WebElement spam = driver.findElement(By.xpath("//span[@class='active_option']"));
-        String texto = spam.getAttribute("textContent");
+        //Paso 2 almaceno en un listado de Web Element los productos
+        List<WebElement> nombreProducto = driver.findElements(By.xpath("//div[@class='inventory_item_name']"));
 
-        String textoEsperado = "Name (A to Z)";
-
-        //Paso2
-
-        try{
-            Assert.assertEquals(textoEsperado,texto);
-            System.out.println("El orden de los productos es el correcto: " + texto);
-        }catch (AssertionError e){
-            System.out.println("ERROR: El orden de los productos es incorrecto. El texto obtenido es: " + texto );
-
+        //Paso 3 Saco en una lista los String
+        List<String> stringNombre = new ArrayList<String>();
+        for (WebElement productName : nombreProducto) {
+            stringNombre.add(productName.getText());
         }
 
+        //Paso 4 Almaceno la lista buena con la cual voy a comparar
+        List<String> nombreCortoProducto = new ArrayList<String>(stringNombre);
+        Collections.sort(nombreCortoProducto, Collections.reverseOrder());
+
+
+        Assert.assertEquals("ERROR: No esta ordenado", nombreCortoProducto, stringNombre);
 
 
     }
@@ -289,55 +258,54 @@ public class Inventario {
     @Test
     public void lowHigh(){
 
-        //Paso 1
-      WebElement  filtro = driver.findElement(By.xpath("//select[@data-test='product_sort_container']"));
-      filtro.click();
-      WebElement  opction = driver.findElement(By.xpath("//option[@value='lohi']"));
-      opction.click();
+        //Paso 1 hago click
+        driver.findElement(By.xpath("//select[@data-test='product_sort_container']")).click();
+        driver.findElement(By.xpath("//option[@value='lohi']")).click();
 
-      WebElement spam = driver.findElement(By.xpath("//span[@class='active_option']"));
-      String texto = spam.getAttribute("textContent");
+        //Paso 2 selecciono los elementos
+        List<WebElement> productoPrecios = driver.findElements(By.xpath("//div[@class='inventory_item_price']"));
 
-      String textoEsperado = "Price (low to high)";
+        //Paso 3 Creo una lista vacia para almacenar
+        List<Double> productPriceValues = new ArrayList<Double>();
 
-        //Paso2
-
-        try{
-            Assert.assertEquals(textoEsperado,texto);
-            System.out.println("El orden de los productos es el correcto: " + texto);
-        }catch (AssertionError e){
-            System.out.println("ERROR: El orden de los productos es incorrecto. El texto obtenido es: " + texto );
-
+        //Paso 4 Los almaceno
+        for (WebElement productPrecio : productoPrecios) {
+            productPriceValues.add(Double.parseDouble(productPrecio.getText().substring(1)));
         }
 
+        //Paso 5 Creo la copia
+        List<Double> sortedProductPriceValues = new ArrayList<Double>(productPriceValues);
+        Collections.sort(sortedProductPriceValues);
 
+        //Paso 6 Comparo
+        Assert.assertEquals("Error: NO COINCIDEN LOS PRECIOS ", sortedProductPriceValues, productPriceValues);
 
     }
 
     @Test
     public void highLow(){
 
-        //Paso 1
-        WebElement  filtro = driver.findElement(By.xpath("//select[@data-test='product_sort_container']"));
-        filtro.click();
-        WebElement  opction = driver.findElement(By.xpath("//option[@value='hilo']"));
-        opction.click();
+        //Paso 1 hago click
+        driver.findElement(By.xpath("//select[@data-test='product_sort_container']")).click();
+        driver.findElement(By.xpath("//option[@value='hilo']")).click();
 
-        WebElement spam = driver.findElement(By.xpath("//span[@class='active_option']"));
-        String texto = spam.getAttribute("textContent");
+        //Paso 2 selecciono los elementos
+        List<WebElement> productoPrecios = driver.findElements(By.xpath("//div[@class='inventory_item_price']"));
 
-        String textoEsperado = "Price (high to low)";
+        //Paso 3 Creo una lista vacia para almacenar
+        List<Double> productPriceValues = new ArrayList<Double>();
 
-        //Paso2
-
-        try{
-            Assert.assertEquals(textoEsperado,texto);
-            System.out.println("El orden de los productos es el correcto: " + texto);
-        }catch (AssertionError e){
-            System.out.println("ERROR: El orden de los productos es incorrecto. El texto obtenido es: " + texto );
-
+        //Paso 4 Los almaceno
+        for (WebElement productPrecio : productoPrecios) {
+            productPriceValues.add(Double.parseDouble(productPrecio.getText().substring(1)));
         }
 
+        //Paso 5 Creo la copia y le hago el reversa
+        List<Double> copiaValosPrecioProductos = new ArrayList<Double>(productPriceValues);
+        Collections.sort(copiaValosPrecioProductos, Collections.reverseOrder());
+
+        //Paso 6 Comparo
+        Assert.assertEquals("Error: NO COINCIDEN LOS PRECIOS ", copiaValosPrecioProductos, productPriceValues);
 
 
     }
