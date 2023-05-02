@@ -2,6 +2,7 @@ package EjercicioSeleniumJunit.Logout;
 
 import EjercicioSeleniumJunit.Login.LoginAceso;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,10 +62,11 @@ public class Logout {
 
     @Test
     public void logout(){
-        WebElement menuButton = driver.findElement(By.id("react-burger-menu-btn"));
+        WebElement menuButton = driver.findElement(By.xpath("//button[@id='react-burger-menu-btn']"));
         menuButton.click();
+        //AÑADIR un wait element
+        WebElement logoutButton = driver.findElement(By.xpath("//a[@id='logout_sidebar_link']"));
 
-        WebElement logoutButton = driver.findElement(By.id("logout_sidebar_link"));
         logoutButton.click();
 
         String paginaEsperada =  "https://www.saucedemo.com/";
@@ -72,6 +74,13 @@ public class Logout {
 
 
             Assert.assertEquals("ERROR: NO COINCIDE LA PAGINA ",paginaEsperada, paginaActual);
+
+    }
+
+    @After
+    public void tearDown(){
+
+        driver.close();
 
     }
 }
