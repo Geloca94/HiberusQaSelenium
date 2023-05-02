@@ -15,8 +15,10 @@ import EjercicioSeleniumJunit.Login.LoginAceso;
 
 
 import java.sql.SQLOutput;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class Inventario {
@@ -115,8 +117,11 @@ public class Inventario {
     @Test
     public void addCarrito(){
 
+        Random rand = new Random();
+        int random = rand.nextInt(7);
+
         //Paso 1
-        WebElement buttonAdd = driver.findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-bolt-t-shirt']"));
+        WebElement buttonAdd = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +random +"]"+"//button[contains(@name, 'add-to-car')]"));
         buttonAdd.click();
 
         //Paso 2
@@ -137,6 +142,8 @@ public class Inventario {
 
 
     }
+
+
 
     @Test
     public void deleteCarrito(){
@@ -173,14 +180,40 @@ public class Inventario {
     @Test
     public void add3Carrito(){
 
-        //Paso 1
-        WebElement buttonAdd = driver.findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-bolt-t-shirt']"));
+
+        //Saco un numero random con Set
+        Random rand = new Random();
+        Set<Integer> set = new HashSet<Integer>();
+
+        while (set.size() < 3) {
+            int randomNumber = rand.nextInt(6) + 1;
+            if (!set.contains(randomNumber)) {
+                set.add(randomNumber);
+            }
+        }
+
+        //Almaceno el numero ramdon en 3 variables para realizar la compra
+        int item1 = 0, item2 = 0, item3 = 0;
+        int i = 1;
+        for (Integer num : set) {
+            if (i == 1) {
+                item1 = num;
+            } else if (i == 2) {
+                item2 = num;
+            } else {
+                item3 = num;
+            }
+            i++;
+        }
+
+        //Paso 3 Selecciono los items con los 3 numeros random
+        WebElement buttonAdd = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +item1 +"]"+"//button[contains(@name, 'add-to-car')]"));
         buttonAdd.click();
 
-        WebElement buttonAdd2 = driver.findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-fleece-jacket']"));
+        WebElement buttonAdd2 = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +item2 +"]"+"//button[contains(@name, 'add-to-car')]"));
         buttonAdd2.click();
 
-        WebElement buttonAdd3 = driver.findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-backpack']"));
+        WebElement buttonAdd3 = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +item3 +"]"+"//button[contains(@name, 'add-to-car')]"));
         buttonAdd3.click();
 
 
@@ -189,7 +222,7 @@ public class Inventario {
 
         try{
 
-            //Paso 2
+            //Paso 4 compruebo que esten  los 3 items
             String carritoCorrecto = "3";
 
             Assert.assertEquals( carritoCorrecto,carrito);
@@ -201,6 +234,8 @@ public class Inventario {
         }
 
         /*
+
+        //Otra manera de generar numeros ramdom
         int i = 0, cantidad = 3, rango = 6;
         int arreglo[] = new int[cantidad];
 
