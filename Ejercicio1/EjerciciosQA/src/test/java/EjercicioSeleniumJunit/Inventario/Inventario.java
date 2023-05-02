@@ -118,7 +118,7 @@ public class Inventario {
     public void addCarrito(){
 
         Random rand = new Random();
-        int random = rand.nextInt(7);
+        int random = rand.nextInt(6)+1;
 
         //Paso 1
         WebElement buttonAdd = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +random +"]"+"//button[contains(@name, 'add-to-car')]"));

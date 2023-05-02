@@ -161,10 +161,12 @@ public class CheckOut {
     public void realizarPedido(){
 
         //Paso 1
-        WebElement buttonAdd = driver.findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-bolt-t-shirt']"));
+        Random rand = new Random();
+        int random = rand.nextInt(6) + 1;
+
+        //Paso 1
+        WebElement buttonAdd = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +random +"]"+"//button[contains(@name, 'add-to-car')]"));
         buttonAdd.click();
-        //WebElement buttonAdd2 = driver.findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-fleece-jacket']"));
-        //buttonAdd2.click();
 
 
         //Paso 2
