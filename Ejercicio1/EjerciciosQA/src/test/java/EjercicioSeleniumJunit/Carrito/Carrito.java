@@ -13,6 +13,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class Carrito {
@@ -64,12 +68,34 @@ public class Carrito {
     @Test
     public void carrito(){
 
-        //Paso 1
-        WebElement buttonAdd = driver.findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-bolt-t-shirt']"));
-        buttonAdd.click();
-        WebElement buttonAdd2 = driver.findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-fleece-jacket']"));
-        buttonAdd2.click();
+        //Saco un numero random con Set
+        Random rand = new Random();
+        Set<Integer> set = new HashSet<Integer>();
 
+        while (set.size() < 3) {
+            int randomNumber = rand.nextInt(6) + 1;
+            if (!set.contains(randomNumber)) {
+                set.add(randomNumber);
+            }
+        }
+
+        //Almaceno el numero ramdon en 3 variables para realizar la compra
+        int item1 = 0, item2 = 0;
+        int i = 1;
+        for (Integer num : set) {
+            if (i == 1) {
+                item1 = num;
+            } else {
+                item2 = num;
+            }
+            i++;
+        }
+
+        //Paso 1
+        WebElement buttonAdd = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +item1 +"]"+"//button[contains(@name, 'add-to-cart')]"));
+        buttonAdd.click();
+        WebElement buttonAdd2 = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +item2 +"]"+"//button[contains(@name, 'add-to-cart')]"));
+        buttonAdd2.click();
 
         //Paso 2
         WebElement carritolink = driver.findElement(By.xpath("//a[@class='shopping_cart_link']"));
@@ -77,36 +103,25 @@ public class Carrito {
 
         String carrito = driver.findElement(By.xpath("//span[@class='shopping_cart_badge']")).getText();
 
-        try{
-
-            //Paso 3
-            String carritoCorrectoAntes = "2";
-            Assert.assertEquals( carritoCorrectoAntes,carrito);
-            System.out.println("La cantidad esperada es: " + carritoCorrectoAntes);
-            System.out.println("La cantidad en el carrito obtenida es : " + carrito);
-        } catch (AssertionError e){
-            System.out.println("La cantidad es incorrecta, cantidad obtenida: " + carrito);
-        }
+        //Paso 3
+        String carritoCorrectoAntes = "2";
+        Assert.assertEquals("ERROR: La cantidad es incorrecta, cantidad obtenida:" ,carritoCorrectoAntes,carrito);
 
 
         //paso 4
-        WebElement remove = driver.findElement(By.xpath("//button[@id='remove-sauce-labs-fleece-jacket']"));
+        WebElement remove = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +item1 +"]"+"//button[contains(@name, 'remove')]"));
         remove.click();
+
+        //List<WebElement> nombreProducto = driver.findElements(By.xpath("//div[@class='inventory_item_name']"));
 
         carrito = driver.findElement(By.xpath("//span[@class='shopping_cart_badge']")).getText();
 
 
-        try{
+        //Paso 5
+        String carritoCorrectoDespues = "1";
 
-            //Paso 5
-            String carritoCorrectoDespues = "1";
+        Assert.assertEquals("ERROR: La cantidad es incorrecta, cantidad obtenida: ", carritoCorrectoDespues,carrito);
 
-            Assert.assertEquals( carritoCorrectoDespues,carrito);
-            System.out.println("La cantidad esperada despues de eliminar un producto  es: " + carritoCorrectoDespues);
-            System.out.println("La cantidad en el carrito obtenida despues de elminar el producto es : " + carrito);
-        } catch (AssertionError e){
-            System.out.println("La cantidad es incorrecta, cantidad obtenida: " + carrito);
-        }
 
 
 

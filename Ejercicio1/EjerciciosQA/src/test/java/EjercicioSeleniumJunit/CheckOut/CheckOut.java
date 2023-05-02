@@ -142,18 +142,11 @@ public class CheckOut {
         double subTotalDouble = Double.parseDouble(subTotalCompra.replace("Item total: $",""));
 
         //Correcion para que la comparacion no de error
-        int comparador = 0;
+        int limitador = 0;
 
-        try{
 
-            Assert.assertEquals( subTotalDouble,total, comparador);
-            System.out.println("El precio esperado debe ser: " + subTotalDouble);
-            System.out.println("El precio obtenido es: " + total);
-            System.out.println("El precio es el correcto");
-        } catch (AssertionError e){
-            System.out.println("El precio obtenido es incorrecto " + total);
-            System.out.println("El precio esperado era: " + subTotalDouble);
-        }
+            Assert.assertEquals("ERROR: EL PRECIO ES INCORRECTO ", subTotalDouble,total, limitador);
+
 
 
 
@@ -199,17 +192,11 @@ public class CheckOut {
         //Paso 7 obtener texto
         String completo = driver.findElement(By.xpath("//div[@class='complete-text']")).getText();
 
-        try{
-
             //Paso 8 Comprobar Texto
             String textoEsperado = "Your order has been dispatched, and will arrive just as fast as the pony can get there!";
 
-            Assert.assertEquals( textoEsperado,completo);
-            System.out.println("El texto esperado debe ser: " + textoEsperado);
-            System.out.println("El texto obtenido es: " + completo);
-        } catch (AssertionError e){
-            System.out.println("El texto obtenido es incorrecto " + completo);
-        }
+            Assert.assertEquals("ERROR: NO COINCIDE ", textoEsperado,completo);
+
 
 
 
