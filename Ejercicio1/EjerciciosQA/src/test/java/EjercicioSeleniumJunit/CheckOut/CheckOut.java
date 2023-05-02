@@ -132,7 +132,7 @@ public class CheckOut {
         WebElement lastName = driver.findElement(By.xpath("//input[@id='last-name']"));
         lastName.sendKeys("Luis");
         WebElement postal = driver.findElement(By.xpath("//input[@id='postal-code']"));
-        postal.sendKeys("33025");
+        postal.sendKeys("35025");
 
         //paso 9 Continuar
         WebElement continuar = driver.findElement(By.xpath("//input[@id='continue']"));
@@ -192,13 +192,10 @@ public class CheckOut {
         //Paso 7 obtener texto
         String completo = driver.findElement(By.xpath("//div[@class='complete-text']")).getText();
 
-            //Paso 8 Comprobar Texto
-            String textoEsperado = "Your order has been dispatched, and will arrive just as fast as the pony can get there!";
+        //Paso 8 Comprobar Texto
+        String textoEsperado = "Your order has been dispatched, and will arrive just as fast as the pony can get there!";
 
-            Assert.assertEquals("ERROR: NO COINCIDE ", textoEsperado,completo);
-
-
-
+        Assert.assertEquals("ERROR: NO COINCIDE ", textoEsperado,completo);
 
     }
 
