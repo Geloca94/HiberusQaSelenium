@@ -2,6 +2,7 @@ package EjercicioSeleniumJunit.Logout;
 
 import EjercicioSeleniumJunit.Login.LoginAceso;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -60,9 +61,23 @@ public class Logout {
 
     @Test
     public void logout(){
-        WebElement ract = driver.findElement(By.xpath("//button[@id='react-burger-menu-btn']"));
-        ract.click();
-        //wait
-        //wait.until(ExpectedCondition.elementToBeClickable(By.xpath("//button[@id='react-burger-menu-btn']"));
+        WebElement menuButton = driver.findElement(By.id("react-burger-menu-btn"));
+        menuButton.click();
+        WebElement logoutButton = driver.findElement(By.id("logout_sidebar_link"));
+        logoutButton.click();
+
+        String paginaEsperada =  "https://www.saucedemo.com/";
+        String paginaActual = driver.getCurrentUrl();
+
+        try{
+
+            Assert.assertEquals(paginaEsperada, paginaActual);
+            System.out.println("La pagina correcta es " + paginaEsperada );
+            System.out.println("La pagina obtenido es: " + paginaActual);
+            System.out.println("La pagina es la correcta");
+        } catch (AssertionError e){
+            System.out.println("El pagina obtenida es incorrecto " + paginaActual);
+            System.out.println("El pagina esperada era: " + paginaEsperada);
+        }
     }
 }
