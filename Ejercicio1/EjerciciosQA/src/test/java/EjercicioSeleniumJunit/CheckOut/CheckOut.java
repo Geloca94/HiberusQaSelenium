@@ -141,10 +141,12 @@ public class CheckOut {
         String subTotalCompra = driver.findElement(By.xpath("//div[@class='summary_subtotal_label']")).getText();
         double subTotalDouble = Double.parseDouble(subTotalCompra.replace("Item total: $",""));
 
+        //Correcion para que la comparacion no de error
+        int comparador = 0;
 
         try{
 
-            Assert.assertEquals( subTotalDouble,total);
+            Assert.assertEquals( subTotalDouble,total, comparador);
             System.out.println("El precio esperado debe ser: " + subTotalDouble);
             System.out.println("El precio obtenido es: " + total);
             System.out.println("El precio es el correcto");
@@ -164,7 +166,7 @@ public class CheckOut {
         Random rand = new Random();
         int random = rand.nextInt(6) + 1;
 
-        //Paso 1
+
         WebElement buttonAdd = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +random +"]"+"//button[contains(@name, 'add-to-car')]"));
         buttonAdd.click();
 
