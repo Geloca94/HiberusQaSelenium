@@ -147,9 +147,6 @@ public class CheckOut {
 
             Assert.assertEquals("ERROR: EL PRECIO ES INCORRECTO ", subTotalDouble,total, limitador);
 
-
-
-
     }
 
     @Test

@@ -1,4 +1,4 @@
-package EjerciciosSelenium;
+package Selenium;
 
 import static org.junit.Assert.assertTrue;
 

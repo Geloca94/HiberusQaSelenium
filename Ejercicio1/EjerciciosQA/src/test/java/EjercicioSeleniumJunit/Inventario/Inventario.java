@@ -5,10 +5,7 @@ import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
 import jdk.nashorn.internal.ir.CatchNode;
 import org.junit.*;
 import org.junit.experimental.theories.suppliers.TestedOn;
-import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -132,21 +129,30 @@ public class Inventario {
     @Test
     public void deleteCarrito(){
 
-        //Paso 1
-        WebElement buttonAdd = driver.findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-bolt-t-shirt']"));
-        buttonAdd.click();
 
-        // Step 6 Compruebo que el boton aparece
+        // Paso 1: Agregar al carrito el producto Sauce Labs Bolt T-Shirt
+        WebElement addButton = driver.findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-bolt-t-shirt']"));
+        addButton.click();
 
-        WebElement remove = driver.findElement(By.xpath("//button[@id='remove-sauce-labs-bolt-t-shirt']"));
-        remove.click();
+        //Paso 2: Comprobar que esta en el carrito
+        String textoCarrito = driver.findElement(By.xpath("//span[@class='shopping_cart_badge']")).getText();
 
-        try {
-            WebElement carrito = driver.findElement(By.xpath("//span[@class='shopping_cart_badge']"));
-        }catch (NoSuchElementException we) {
+        String textoCorrecto = "1";
 
-            Assert.fail("ERROR, el carrito no esta vacio");
-        }
+        Assert.assertEquals("ERROR: CARRITO VACIO",textoCorrecto,textoCarrito);
+
+        // Paso 3: Eliminar el producto Sauce Labs Bolt T-Shirt
+        WebElement removeButton = driver.findElement(By.xpath("//button[@id='remove-sauce-labs-bolt-t-shirt']"));
+        removeButton.click();
+
+
+        // Paso 4: Validar que en el icono del carrito se ha eliminado el producto
+
+        List <WebElement> carritoVacio = driver.findElements(By.xpath("//span[@class='shopping_cart_badge']"));
+
+        Assert.assertEquals("ERROR: El carrito sigue teniendo productos", 0, carritoVacio.size());
+
+
 
 
 
@@ -204,29 +210,7 @@ public class Inventario {
             Assert.assertEquals( "Error, la cantidad no corresponde con el carrito ",carritoCorrecto,carrito);
 
 
-        /*
 
-        //Otra manera de generar numeros ramdom
-        int i = 0, cantidad = 3, rango = 6;
-        int arreglo[] = new int[cantidad];
-
-        arreglo[i] = (int) (Math.random()*rango);
-
-        for(i=1; i<cantidad; i++) {
-            arreglo[i] = (int) (Math.random()*rango);
-            for (int j = 0; j<1; j++){
-                //Si el valor es repetido retrocede hasta aque el valor sea otro diferente
-                if (arreglo[i]==arreglo[j]){
-                    i--;
-                }
-            }
-        }
-
-        for (int k=0; k<cantidad ;k++){
-
-            //Para imprimir la cantidad
-        }
-        */
     }
 
     @Test

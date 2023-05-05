@@ -1,4 +1,4 @@
-package EjerciciosSelenium;
+package Selenium;
 
 /**
  * Hello world!
