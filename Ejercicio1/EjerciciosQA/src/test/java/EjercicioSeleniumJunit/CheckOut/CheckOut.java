@@ -1,6 +1,5 @@
 package EjercicioSeleniumJunit.CheckOut;
 
-import EjercicioSeleniumJunit.Login.LoginAceso;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Assert;
@@ -10,10 +9,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -23,9 +19,6 @@ public class CheckOut {
 
 
 
-
-    LoginAceso loginAceso;
-
     WebDriver driver;
     WebDriverWait wait;
     String url = "https://www.saucedemo.com/";
@@ -34,7 +27,6 @@ public class CheckOut {
     @Before
     public void setUp(){
 
-        loginAceso = new LoginAceso();
 
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();

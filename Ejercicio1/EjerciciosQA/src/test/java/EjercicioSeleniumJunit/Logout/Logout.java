@@ -1,6 +1,5 @@
 package EjercicioSeleniumJunit.Logout;
 
-import EjercicioSeleniumJunit.Login.LoginAceso;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Assert;
@@ -11,14 +10,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
 
 public class Logout {
-
-    LoginAceso loginAceso;
 
     WebDriver driver;
     WebDriverWait wait;
@@ -28,7 +24,7 @@ public class Logout {
     @Before
     public void setUp(){
 
-        loginAceso = new LoginAceso();
+
 
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();

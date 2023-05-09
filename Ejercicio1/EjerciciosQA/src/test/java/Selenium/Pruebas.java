@@ -1,6 +1,5 @@
 package Selenium;
 
-import EjercicioSeleniumJunit.Login.LoginAceso;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Assert;
@@ -19,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Pruebas {
 
-    LoginAceso loginAceso;
+
 
     WebDriver driver;
     WebDriverWait wait;
@@ -30,7 +29,7 @@ public class Pruebas {
     @Before
     public void setUp(){
 
-        //loginAceso = new LoginAceso();
+
 
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();

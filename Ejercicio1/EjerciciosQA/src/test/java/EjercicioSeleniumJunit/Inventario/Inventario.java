@@ -1,28 +1,19 @@
 package EjercicioSeleniumJunit.Inventario;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
-import jdk.nashorn.internal.ir.CatchNode;
 import org.junit.*;
-import org.junit.experimental.theories.suppliers.TestedOn;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import EjercicioSeleniumJunit.Login.LoginAceso;
 
 
-import java.sql.SQLOutput;
-import java.sql.Time;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class Inventario {
 
 
-    LoginAceso loginAceso;
 
     WebDriver driver;
     WebDriverWait wait;
@@ -33,7 +24,6 @@ public class Inventario {
     @Before
     public void setUp(){
 
-        loginAceso = new LoginAceso();
 
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
@@ -127,39 +117,31 @@ public class Inventario {
 
 
     @Test
-    public void deleteCarrito(){
+    public void deleteProductCarrito() {
+        // Step 1 - Agregar al carrito 2 productos elegidos al azar
+        List <WebElement> addToCartButtons = driver.findElements(By.xpath("//button[contains(@data-test, 'add-to-cart-')]"));
+        Random random = new Random();
+        int random1 = random.nextInt(addToCartButtons.size());
+        int random2;
+        do {
+            random2 = random.nextInt(addToCartButtons.size());
+        }while (random1 == random2);
+        addToCartButtons.get(random1).click();
+        addToCartButtons.get(random2).click();
 
-
-        // Paso 1: Agregar al carrito el producto Sauce Labs Bolt T-Shirt
-        WebElement addButton = driver.findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-bolt-t-shirt']"));
-        addButton.click();
-
-        //Paso 2: Comprobar que esta en el carrito
-        String textoCarrito = driver.findElement(By.xpath("//span[@class='shopping_cart_badge']")).getText();
-
-        String textoCorrecto = "1";
-
-        Assert.assertEquals("ERROR: CARRITO VACIO",textoCorrecto,textoCarrito);
-
-        // Paso 3: Eliminar el producto Sauce Labs Bolt T-Shirt
-        WebElement removeButton = driver.findElement(By.xpath("//button[@id='remove-sauce-labs-bolt-t-shirt']"));
-        removeButton.click();
-
-
-        // Paso 4: Validar que en el icono del carrito se ha eliminado el producto
-
-        List <WebElement> carritoVacio = driver.findElements(By.xpath("//span[@class='shopping_cart_badge']"));
-
-        Assert.assertEquals("ERROR: El carrito sigue teniendo productos", 0, carritoVacio.size());
-
-
-
-
-
-
-
+        // Step 2 - Ir al carrito
+        driver.findElement(By.xpath("//a[@class='shopping_cart_link']")).click();
+        List <WebElement> productosCarritoAntes = driver.findElements(By.xpath("//div[@class='cart_item']"));
+        // Step 3 - Eliminar uno de los productos
+        String numProducts = driver.findElement(By.xpath("//span[@class='shopping_cart_badge']")).getText();
+        int numeroProductos = Integer.parseInt(numProducts);
+        int randomProduct = random.nextInt(numeroProductos);
+        List <WebElement> productsInCart = driver.findElements(By.xpath("//button[contains(@data-test, 'remove-')]"));
+        productsInCart.get(randomProduct).click();
+        // Step 4- Validar que el producto eliminado no aparece en el carrito.
+        List <WebElement> productosCarritoDespues = driver.findElements(By.xpath("//div[@class='cart_item']"));
+        Assert.assertNotEquals("ERROR: El producto no se ha eliminado del carrito.", productosCarritoAntes.size(), productosCarritoDespues.size());
     }
-
     @Test
     public void add3Carrito(){
 

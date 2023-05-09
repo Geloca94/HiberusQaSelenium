@@ -1,6 +1,5 @@
 package EjercicioSeleniumJunit.Carrito;
 
-import EjercicioSeleniumJunit.Login.LoginAceso;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Assert;
@@ -14,7 +13,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -22,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class Carrito {
 
 
-    LoginAceso loginAceso;
+
 
     WebDriver driver;
     WebDriverWait wait;
@@ -32,7 +30,6 @@ public class Carrito {
     @Before
     public void setUp(){
 
-        loginAceso = new LoginAceso();
 
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
@@ -96,6 +93,8 @@ public class Carrito {
         buttonAdd.click();
         WebElement buttonAdd2 = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +item2 +"]"+"//button[contains(@name, 'add-to-cart')]"));
         buttonAdd2.click();
+
+       // List <WebElement> carritoVacio = driver.findElements();
 
         //Paso 2
         WebElement carritolink = driver.findElement(By.xpath("//a[@class='shopping_cart_link']"));
