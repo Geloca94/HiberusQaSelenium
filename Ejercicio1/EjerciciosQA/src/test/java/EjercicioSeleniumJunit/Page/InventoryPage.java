@@ -1,6 +1,6 @@
 package EjercicioSeleniumJunit.Page;
 
-import lombok.Value;
+
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
@@ -14,11 +14,13 @@ import java.util.List;
 @Slf4j
 public class InventoryPage extends AbstractPage {
 
+    public static final String PAGE_URL = "https://www.saucedemo.com/inventory.html";
+
     @FindBy(id = "react-burger-menu-btn")
     private WebElement openMenu;
     @FindBy(className = "shopping_cart_link")
     private WebElement shoppingCartElement;
-    @FindBy(className = "inventory_iteam")
+    @FindBy(className = "inventory_item")
     private WebElement inventoryItemElement;
     @FindBy(className = "product_sort_container")
     private WebElement productSortContainerSelect;
@@ -38,11 +40,11 @@ public class InventoryPage extends AbstractPage {
     }
 
 
-    public void addItemToCartByName(String itemName) {
+    public void addItemToCartByName(String itemName, String action ) {
         try {
             String itemNameReplaced = itemName.replace(" ","-");
             String itemNameLowerCase = itemNameReplaced.toLowerCase();
-            WebElement addItemButton = getDriver().findElement(By.xpath("//div[@class='inventory_item_price']/button[@id='add-to-cart-" + itemNameLowerCase + "']"));
+            WebElement addItemButton = getDriver().findElement(By.xpath("//div[@class='inventory_item_price']/button[@id='"+ action +"-" + itemNameLowerCase + "']"));
             addItemButton.click();
         } catch (TimeoutException timeoutException) {
             log.info("Timeout adding item " + itemName + " to cart: " + timeoutException.getClass().getSimpleName());

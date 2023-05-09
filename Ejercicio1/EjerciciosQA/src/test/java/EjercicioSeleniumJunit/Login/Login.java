@@ -1,5 +1,6 @@
 package EjercicioSeleniumJunit.Login;
 
+import EjercicioSeleniumJunit.Page.PagesFactory;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Assert;
@@ -32,7 +33,7 @@ public class Login {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.manage().window().maximize();
 
-        wait = new WebDriverWait(driver, 5);
+
     }
 
     @Test

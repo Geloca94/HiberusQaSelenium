@@ -14,8 +14,8 @@ public class PagesFactory {
     private final CheckOutStepOnePage checkOutStepOnePage;
     private final CheckOutStepSecondPage checkOutStepSecondPage;
     private final InventoryPage inventoryPage;
-
     private final InventoryItemPage inventoryItemPage;
+    private final InventoryPageJhonatan inventoryPageJhonatan;
 
     private PagesFactory(WebDriver driver){
         this.driver = driver;
@@ -26,6 +26,7 @@ public class PagesFactory {
         checkOutStepSecondPage = new CheckOutStepSecondPage(driver);
         inventoryPage = new InventoryPage(driver);
         inventoryItemPage = new InventoryItemPage(driver);
+        inventoryPageJhonatan = new InventoryPageJhonatan(driver);
     }
 
     public static void start(WebDriver driver){
