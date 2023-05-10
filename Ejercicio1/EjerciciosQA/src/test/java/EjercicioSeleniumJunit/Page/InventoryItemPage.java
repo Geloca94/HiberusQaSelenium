@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
@@ -23,8 +24,12 @@ public class InventoryItemPage extends AbstractPage {
     private WebElement itemDescripcion;
     @FindBy(className = "btn btn_primary btn_small btn_inventory")
     private WebElement addToCartButton;
-    @FindBy(tagName = "button", linkText = "remove")
+    @FindBys({
+            @FindBy (tagName = "button"),
+            @FindBy (linkText = "remove")
+    })
     private WebElement removeButton;
+
     @FindBy(className = "inventory_details_price")
     private WebElement itemPrice;
     @FindBy(className = "shopping_cart_link")

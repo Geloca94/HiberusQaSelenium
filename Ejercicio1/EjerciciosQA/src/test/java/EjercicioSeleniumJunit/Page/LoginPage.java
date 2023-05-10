@@ -10,13 +10,15 @@ import org.openqa.selenium.support.PageFactory;
 @Slf4j
 public class LoginPage extends AbstractPage {
 
+    public static final String PAGE_URL = "https://www.saucedemo.com/";
+
     @FindBy(id = "user-name")
     private WebElement usernameInput;
     @FindBy(id = "password")
     private WebElement passwordInput;
     @FindBy(id = "login-button")
     private WebElement loginButton;
-    @FindBy(xpath = "//h3[@data-text='error']")
+    @FindBy(xpath = "//h3[@data-test='error']")
     private WebElement errorMessage;
 
     public LoginPage(WebDriver driver){
@@ -44,9 +46,9 @@ public class LoginPage extends AbstractPage {
         usernameInput.sendKeys(username);
     }
 
-    public void passwordInput(String password){
-        usernameInput.click();
-        usernameInput.sendKeys(password);
+    public void enterPassword(String password){
+        passwordInput.click();
+        passwordInput.sendKeys(password);
     }
 
     public boolean hasUsernamePasswordError(){

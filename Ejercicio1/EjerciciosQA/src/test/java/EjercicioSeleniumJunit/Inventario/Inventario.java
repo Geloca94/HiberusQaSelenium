@@ -1,5 +1,8 @@
 package EjercicioSeleniumJunit.Inventario;
 
+import EjercicioSeleniumJunit.Page.InventoryPage;
+import EjercicioSeleniumJunit.Page.LoginPage;
+import EjercicioSeleniumJunit.Page.PagesFactory;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.*;
 import org.openqa.selenium.*;
@@ -16,9 +19,13 @@ public class Inventario {
 
 
     WebDriver driver;
-    WebDriverWait wait;
     String url = "https://www.saucedemo.com/";
-
+    LoginPage loginPage;
+    InventoryPage inventoryPage;
+    String precio = "price";
+    String nombre = "name";
+    String add= "add-to-cart";
+    String remove =  "remove";
 
 
     @Before
@@ -32,25 +39,20 @@ public class Inventario {
         driver.manage().deleteAllCookies();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.manage().window().maximize();
+        PagesFactory.start(driver);
+        driver.get(InventoryPage.PAGE_URL);
+        PagesFactory pagesFactory = PagesFactory.getInstance();
 
-        wait = new WebDriverWait(driver, 5);
+        inventoryPage = pagesFactory.getInventoryPage();
 
 
-        driver.get(url);
+        //Acceso a la PAgina
+        loginPage = pagesFactory.getLoginPage();
+        loginPage.enterUsername("standard_user");
+        loginPage.enterPassword("secret_sauce");
+        loginPage.clickLogin();
 
-        //loginAceso.Acceso();
 
-        //USER
-        WebElement username = driver.findElement(By.xpath("//input[@data-test='username']"));
-        username.sendKeys("standard_user");
-
-        //CONTRA
-        WebElement password = driver.findElement(By.xpath("//input[@data-test='password']"));
-        password.sendKeys("secret_sauce");
-
-        //BOTON
-        WebElement buttonLogin = driver.findElement(By.xpath("//input[@data-test='login-button']"));
-        buttonLogin.click();
 
 
     }
@@ -58,20 +60,16 @@ public class Inventario {
     @Test
     public void validationNumeroResultados(){
 
-        //Paso 1
-        List<WebElement> elementos = driver.findElements(By.xpath("//div[@class='inventory_item']"));
 
-        //Paso 2
-            int cantidad = elementos.size();
             int cantidadEsperada = 6;
 
-            Assert.assertEquals("Error la cantidad no corresponde con lo espereado: ", cantidadEsperada,cantidad);
-
-
-
-
+            //Funcion que te cuenta el tamaño
+            Assert.assertEquals("Error la cantidad no corresponde con lo espereado: ", cantidadEsperada,inventoryPage.contarCantidadLista());
 
     }
+
+
+
     @Test
     public void validationProducto(){
 
@@ -93,9 +91,9 @@ public class Inventario {
         Assert.assertTrue("El Resultado es ", isPresent);
 
     }
-
+    // Carrito
     @Test
-    public void addCarrito(){
+    public void addCartRandom(){
 
         Random rand = new Random();
         int random = rand.nextInt(6)+1;
@@ -113,6 +111,25 @@ public class Inventario {
             Assert.assertEquals( "Error, la cantidad no corresponde con el carrito ",carritoCorrecto,carrito);
 
 
+    }
+
+    @Test
+    public void AddTshirtToCart(){
+
+        inventoryPage.addOrRemoveItemToCartByName("Sauce Labs Bolt T-Shirt", add);
+        String expectedCartNumber = "1";
+        Assert.assertEquals("ERROR: number of products in cart does not match the expected number", expectedCartNumber, inventoryPage.getNumbInBadge());
+    }
+
+    public void DeleteTshirtToCart(){
+
+        inventoryPage.addOrRemoveItemToCartByName("Sauce Labs Bolt T-Shirt", add);
+
+        inventoryPage.addOrRemoveItemToCartByName("Sauce Labs Bolt T-Shirt", remove);
+
+        WebElement producto =  driver.findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-bolt-t-shirt']"));
+
+        Assert.assertEquals("ERROR: El producto no fue borrado", producto, inventoryPage.getNumbInBadge());
     }
 
 
@@ -196,48 +213,65 @@ public class Inventario {
     }
 
     @Test
-    public void alphabetic(){
+    public void AZ(){
 
-        //Paso 1 hago click
-        driver.findElement(By.xpath("//select[@data-test='product_sort_container']")).click();
-        driver.findElement(By.xpath("//option[@value='za']")).click();
+        inventoryPage.sortInventoryByNameAsc();
 
         //Paso 2 almaceno en un listado de Web Element los productos
-        List<WebElement> nombreProducto = driver.findElements(By.xpath("//div[@class='inventory_item_name']"));
+        List <WebElement> productoNombres = inventoryPage.selectLista(nombre);
 
         //Paso 3 Saco en una lista los String
-        List<String> stringNombre = new ArrayList<String>();
-        for (WebElement productName : nombreProducto) {
-            stringNombre.add(productName.getText());
-        }
+
+
+        List<String>productName = inventoryPage.almacenListaNombre(productoNombres);
+
 
         //Paso 4 Almaceno la lista buena con la cual voy a comparar
-        List<String> nombreCortoProducto = new ArrayList<String>(stringNombre);
-        Collections.sort(nombreCortoProducto, Collections.reverseOrder());
+        List<String> nombreAZ = new ArrayList<String>(productName);
+        Collections.sort(nombreAZ);
 
 
-        Assert.assertEquals("ERROR: No esta ordenado", nombreCortoProducto, stringNombre);
+        Assert.assertEquals("ERROR: No esta ordenado", nombreAZ, productName);
 
 
     }
 
     @Test
+    public void ZA(){
+
+        inventoryPage.sortInventoryByNameDesc();
+
+        //Paso 2 almaceno en un listado de Web Element los productos
+        List <WebElement> productoNombres = inventoryPage.selectLista(nombre);
+
+        //Paso 3 Saco en una lista los String
+
+
+        List<String>productName = inventoryPage.almacenListaNombre(productoNombres);
+
+
+        //Paso 4 Almaceno la lista buena con la cual voy a comparar
+        List<String> nombreZA = new ArrayList<String>(productName);
+        Collections.sort(nombreZA, Collections.reverseOrder());
+
+
+        Assert.assertEquals("ERROR: No esta ordenado", nombreZA, productName);
+
+
+    }
+
+
+    @Test
     public void lowHigh(){
 
         //Paso 1 hago click
-        driver.findElement(By.xpath("//select[@data-test='product_sort_container']")).click();
-        driver.findElement(By.xpath("//option[@value='lohi']")).click();
+        inventoryPage.sortInventoryByPriceAsc();
 
         //Paso 2 selecciono los elementos
-        List<WebElement> productoPrecios = driver.findElements(By.xpath("//div[@class='inventory_item_price']"));
+         List <WebElement> productoPrecios = inventoryPage.selectLista(precio);
 
-        //Paso 3 Creo una lista vacia para almacenar
-        List<Double> productPriceValues = new ArrayList<Double>();
-
-        //Paso 4 Los almaceno
-        for (WebElement productPrecio : productoPrecios) {
-            productPriceValues.add(Double.parseDouble(productPrecio.getText().substring(1)));
-        }
+        //Paso 4 Creo una lista vacia para almacenarlos y Los almaceno
+        List<Double>productPriceValues = inventoryPage.almacenListaPrecio(productoPrecios);
 
         //Paso 5 Creo la copia
         List<Double> sortedProductPriceValues = new ArrayList<Double>(productPriceValues);
@@ -252,26 +286,20 @@ public class Inventario {
     public void highLow(){
 
         //Paso 1 hago click
-        driver.findElement(By.xpath("//select[@data-test='product_sort_container']")).click();
-        driver.findElement(By.xpath("//option[@value='hilo']")).click();
+        inventoryPage.sortInventoryByPriceDesc();
 
         //Paso 2 selecciono los elementos
-        List<WebElement> productoPrecios = driver.findElements(By.xpath("//div[@class='inventory_item_price']"));
+        List <WebElement> productoPrecios = inventoryPage.selectLista(precio);
 
-        //Paso 3 Creo una lista vacia para almacenar
-        List<Double> productPriceValues = new ArrayList<Double>();
-
-        //Paso 4 Los almaceno
-        for (WebElement productPrecio : productoPrecios) {
-            productPriceValues.add(Double.parseDouble(productPrecio.getText().substring(1)));
-        }
+        //Paso 4 Creo una lista vacia para almacenarlos y Los almaceno
+        List<Double>productPriceValues = inventoryPage.almacenListaPrecio(productoPrecios);
 
         //Paso 5 Creo la copia y le hago el reversa
-        List<Double> copiaValosPrecioProductos = new ArrayList<Double>(productPriceValues);
-        Collections.sort(copiaValosPrecioProductos, Collections.reverseOrder());
+        List<Double> sortedProductPriceValues = new ArrayList<Double>(productPriceValues);
+        Collections.sort(sortedProductPriceValues, Collections.reverseOrder());
 
         //Paso 6 Comparo
-        Assert.assertEquals("Error: NO COINCIDEN LOS PRECIOS ", copiaValosPrecioProductos, productPriceValues);
+        Assert.assertEquals("Error: NO COINCIDEN LOS PRECIOS ", sortedProductPriceValues, productPriceValues);
 
 
     }

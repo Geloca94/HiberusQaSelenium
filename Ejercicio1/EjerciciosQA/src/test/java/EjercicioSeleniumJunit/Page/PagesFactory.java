@@ -1,14 +1,15 @@
 package EjercicioSeleniumJunit.Page;
 
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 
+@Getter
 public class PagesFactory {
 
     private static PagesFactory pagesFactories;
 
     private final WebDriver driver;
     //Paginas para inicializar
-
     private final LoginPage loginPage;
     private final CartPage cartPage;
     private final CheckOutStepOnePage checkOutStepOnePage;
@@ -37,5 +38,11 @@ public class PagesFactory {
     public WebDriver getDriver(){
         return driver;
     }
+
+    public static PagesFactory getInstance(){
+        return pagesFactories;
+    }
+
+
 
 }
