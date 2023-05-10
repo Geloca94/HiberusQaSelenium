@@ -1,0 +1,110 @@
+
+CDP 1 -Login Correcto-
+
+Given el usuario se encuentra en la pagina de inicio "https://www.saucedemo.com"
+And el usuario proporciona el usuario "standard_user" y contraseña "secret_sauce"
+When el usuario hace click en el boton "login"
+Then el usuario se encuentra en la pagina de inventario
+
+CDP 2 -Login Incorrecto-
+
+Given el usuario se encuentra en la pagina de inicio "https://www.saucedemo.com"
+And el usuario proporciona el usuario "standard" y contraseña "secret_sauce"
+When el usuario hace click en el boton "login"
+Then el usuario se encuentra con un mensaje de error
+
+CDP 3 -Hay 6 Prductos-
+
+Given el usuario se encuentra en la pagina de inicio "https://www.saucedemo.com/inventory.html"
+When el usuario comprueba que hay 6 productos mostrados
+Then el usuario
+
+CDP 4 -Existe producto-
+
+Given el usuario se encuentra en la pagina de inicio "https://www.saucedemo.com/inventory.html"
+And el usuario localiza el producto Sauce Labs Balt T-shit
+Then el usuario comprueba que el producto esta en el inventario
+
+
+CDP 5 -Añadir Producto-
+
+Given el usuario se encuentra en la pagina de inicio "https://www.saucedemo.com/inventory.html"
+And el usuario localiza el producto Sauce Labs Balt T-shit
+When el usuario hace click en el boton "add to cart"
+Then el usuario comprueba que el producto esta en el carrito
+
+CDP 6 -Borrar Producto-
+
+Given el usuario se encuentra en la pagina de inicio "https://www.saucedemo.com/inventory.html"
+And el usuario localiza el producto Sauce Labs Balt T-shit
+And el usuario hace click en el boton "add to cart"
+And el usuario comprueba que el producto esta en el carrito
+When el usuario hace click en el boton "remove"
+Then el usuario comprueba que el producto ya no esta en el carrito
+
+CDP 7 -Añadir 'x' productos-
+
+Given el usuario se encuentra en la pagina de inicio "https://www.saucedemo.com/inventory.html"
+And el usuario localiza 'x' producto
+When el usuario hace click en el boton "add to cart" de 'x' producto
+Then el usuario comprueba que en el icono del carrito aparecer un numero equivalente a 'x' productos seleccionados
+
+CDP 8 -Ordenar Z-A productos
+
+Given el usuario se encuentra en la pagina de inicio "https://www.saucedemo.com/inventory.html"
+And el usuario localiza el 'product_sort_container'
+When el usuario selecciona la opcion 'Z-A'
+Then el usuario comprueba que los productos se han ordenado de Z-A
+
+CDP 9 -Ordenar menor a Mayor productos
+
+Given el usuario se encuentra en la pagina de inicio "https://www.saucedemo.com/inventory.html"
+And el usuario localiza el 'product_sort_container'
+When el usuario selecciona la opcion 'lohi'
+Then el usuario comprueba que los productos se han ordenado de menor a mayor
+
+CDP 10 -Ordenar Mayor a Menor productos
+
+Given el usuario se encuentra en la pagina de inicio "https://www.saucedemo.com/inventory.html"
+And el usuario localiza el 'product_sort_container'
+When el usuario selecciona la opcion 'hilo'
+Then el usuario comprueba que los productos se han ordenado de Mayor a Menor
+
+CDP 11 -Eliminar producto desde el carrito
+
+Given el usuario se encuentra en la pagina de inicio "https://www.saucedemo.com/inventory.html"
+And el usuario localiza 'x' producto
+And el usuario hace click en el boton "add to cart" de 'x' producto
+And el usuario hace click en el boton del carrito
+When el usuario hace click en el boton "Remove" de 'x' productos
+Then el usuario comprueba que los productos ya no aparecen en el carrito
+
+CDP 12 -Comprueba el precio final del CheckOut
+
+Given el usuario se encuentra en la pagina de inicio "https://www.saucedemo.com/inventory.html"
+And el usuario localiza 'x' producto
+And el usuario hace click en el boton "add to cart" de 'x' producto
+And el usuario hace click en el boton del carrito
+And el usuario hace click en el boton "CheckOut"
+And el usuario proporciona el FirstName "..." , LastName "...", CodigoPostal '..'
+When el usuario hace click en el boton "Continue"
+Then el usuario comprueba que el total de los "x" productos es igual a la suma de sus precios
+
+CDP 13 -Realizar Pedido
+
+Given el usuario se encuentra en la pagina de inicio "https://www.saucedemo.com/inventory.html"
+And el usuario localiza 'x' producto
+And el usuario hace click en el boton "add to cart" de 'x' producto
+And el usuario hace click en el boton del carrito
+And el usuario hace click en el boton "CheckOut"
+And el usuario proporciona el FirstName "..." , LastName "...", CodigoPostal '..'
+And el usuario hace click en el boton "Continue"
+When el usuario hace click en el boton "Finish"
+Then el usuario comprueba que le sale un texto 'Thank you for your order!' y un boton 'BackHome'
+
+CDP 14 -Logout
+
+Given el usuario se encuentra en la pagina de inicio "https://www.saucedemo.com/inventory.html"
+And el usuario hace 'react-burger-menu-btn'
+When el usuario hace click en el boton "Logout"
+Then el usuario comprueba que se encuentra en la pagina "https://www.saucedemo.com"
