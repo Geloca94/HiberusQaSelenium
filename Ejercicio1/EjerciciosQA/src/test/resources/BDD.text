@@ -105,6 +105,6 @@ Then el usuario comprueba que le sale un texto 'Thank you for your order!' y un 
 CDP 14 -Logout
 
 Given el usuario se encuentra en la pagina de inicio "https://www.saucedemo.com/inventory.html"
-And el usuario hace 'react-burger-menu-btn'
+And el usuario hace "react-burger-menu-btn"
 When el usuario hace click en el boton "Logout"
 Then el usuario comprueba que se encuentra en la pagina "https://www.saucedemo.com"
