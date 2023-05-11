@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 
-public class inventoryItem {
+public class InventoryItem {
     private String name;
     private String description;
     private String price;

@@ -1,4 +1,4 @@
-package EjercicioSeleniumJunit.Page;
+package EjercicioSeleniumJunit.Pages;
 
 import lombok.Getter;
 import org.openqa.selenium.WebDriver;

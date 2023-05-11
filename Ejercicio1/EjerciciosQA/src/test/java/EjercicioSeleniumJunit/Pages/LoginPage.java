@@ -1,4 +1,4 @@
-package EjercicioSeleniumJunit.Page;
+package EjercicioSeleniumJunit.Pages;
 
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.TimeoutException;
@@ -11,7 +11,6 @@ import org.openqa.selenium.support.PageFactory;
 public class LoginPage extends AbstractPage {
 
     public static final String PAGE_URL = "https://www.saucedemo.com/";
-
     @FindBy(id = "user-name")
     private WebElement usernameInput;
     @FindBy(id = "password")

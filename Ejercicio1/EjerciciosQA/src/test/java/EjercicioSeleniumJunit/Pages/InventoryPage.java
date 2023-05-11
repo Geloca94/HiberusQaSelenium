@@ -1,4 +1,4 @@
-package EjercicioSeleniumJunit.Page;
+package EjercicioSeleniumJunit.Pages;
 
 
 import lombok.extern.slf4j.Slf4j;

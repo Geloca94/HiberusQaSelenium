@@ -1,13 +1,12 @@
-package EjercicioSeleniumJunit.Page;
+package EjercicioSeleniumJunit.Pages;
 
 
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import lombok.extern.slf4j.Slf4j;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-
+@Slf4j
 public abstract class  AbstractPage {
     private final WebDriver driver;
     protected Wait<WebDriver> wait;
@@ -31,5 +30,18 @@ public abstract class  AbstractPage {
             return  isLoaded;
     }
 
+    public void navigateTo(String url) {
+        try {
+            driver.navigate().to(url);
+        } catch (java.lang.Exception e) {
+            if (e instanceof TimeoutException) {
+                log.info("Timeout loading home page");
+            } else if (e instanceof ScriptTimeoutException) {
+                log.info("Script timeout loading home page");
+            } else {
+                log.error(e.getMessage());
+            }
+        }
+    }
     public abstract WebElement getPageLoadedTestElement();
 }

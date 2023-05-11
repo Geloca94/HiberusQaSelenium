@@ -1,8 +1,8 @@
 package EjercicioSeleniumJunit.Login;
 
-import EjercicioSeleniumJunit.Page.InventoryPage;
-import EjercicioSeleniumJunit.Page.LoginPage;
-import EjercicioSeleniumJunit.Page.PagesFactory;
+import EjercicioSeleniumJunit.Pages.InventoryPage;
+import EjercicioSeleniumJunit.Pages.LoginPage;
+import EjercicioSeleniumJunit.Pages.PagesFactory;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Assert;

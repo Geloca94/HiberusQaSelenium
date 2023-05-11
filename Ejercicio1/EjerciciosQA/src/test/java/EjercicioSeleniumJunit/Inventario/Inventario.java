@@ -1,14 +1,13 @@
 package EjercicioSeleniumJunit.Inventario;
 
-import EjercicioSeleniumJunit.Page.InventoryPage;
-import EjercicioSeleniumJunit.Page.LoginPage;
-import EjercicioSeleniumJunit.Page.PagesFactory;
+import EjercicioSeleniumJunit.Pages.InventoryPage;
+import EjercicioSeleniumJunit.Pages.LoginPage;
+import EjercicioSeleniumJunit.Pages.PagesFactory;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 import java.util.*;
