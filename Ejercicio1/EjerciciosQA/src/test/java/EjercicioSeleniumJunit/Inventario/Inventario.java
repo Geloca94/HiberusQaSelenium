@@ -18,7 +18,6 @@ public class Inventario {
 
 
     WebDriver driver;
-    String url = "https://www.saucedemo.com/";
     LoginPage loginPage;
     InventoryPage inventoryPage;
     String precio = "price";
@@ -55,7 +54,7 @@ public class Inventario {
 
 
     }
-
+    //validar Numero de resultados
     @Test
     public void validationNumeroResultados(){
 
@@ -67,8 +66,7 @@ public class Inventario {
 
     }
 
-
-
+    //Validad que un producto exista
     @Test
     public void validationProducto(){
 
@@ -76,42 +74,35 @@ public class Inventario {
 
         String camisetaEsperada = "Sauce Labs Bolt T-Shirt";
 
-        List<WebElement> listaProducto= driver.findElements(By.xpath("//div[@class='inventory_item_name']"));
+        boolean isPresent = inventoryPage.porductoCarrito(camisetaEsperada);
 
-        boolean isPresent = false;
 
-        for(int i = 0; i < listaProducto.size(); i++){
 
-           if( listaProducto.get(i).getText().equals(camisetaEsperada)){
-               isPresent = true;
-           }
-        }
-
-        Assert.assertTrue("El Resultado es ", isPresent);
+        Assert.assertTrue("Error el producto no existe: ", isPresent);
 
     }
-    // Carrito
+    // Añadir Producto Random al carrito
     @Test
     public void addCartRandom(){
 
-        Random rand = new Random();
-        int random = rand.nextInt(6)+1;
 
-        //Paso 1
-        WebElement buttonAdd = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +random +"]"+"//button[contains(@name, 'add-to-car')]"));
+        //Cantidad a introducir de numeros aleatorios
+        int []numerosAleatorios = inventoryPage.generarNumerosAleatoriosUnicos(1);
+
+        // Almacenar el numero de la posicion que quieres extraer de la funcion
+        int num1= numerosAleatorios[0];
+
+        //Buscar Producto  mediante el driver
+        WebElement buttonAdd = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +num1 +"]"+"//button[contains(@name, 'add-to-car')]"));
         buttonAdd.click();
 
-        //Paso 2
-        String carrito = driver.findElement(By.xpath("//span[@class='shopping_cart_badge']")).getText();
 
-            //Paso 3
-            String carritoCorrecto = "1";
-
-            Assert.assertEquals( "Error, la cantidad no corresponde con el carrito ",carritoCorrecto,carrito);
+        String expectedCartNumber = "1";
+        Assert.assertEquals("ERROR: number of products in cart does not match the expected number", expectedCartNumber, inventoryPage.getNumbInBadge());
 
 
     }
-
+    //Añadir Camiseta
     @Test
     public void AddTshirtToCart(){
 
@@ -119,19 +110,19 @@ public class Inventario {
         String expectedCartNumber = "1";
         Assert.assertEquals("ERROR: number of products in cart does not match the expected number", expectedCartNumber, inventoryPage.getNumbInBadge());
     }
-
+    //Borrar Producto y validad que fue borrado
+    @Test
     public void DeleteTshirtToCart(){
 
         inventoryPage.addOrRemoveItemToCartByName("Sauce Labs Bolt T-Shirt", add);
 
         inventoryPage.addOrRemoveItemToCartByName("Sauce Labs Bolt T-Shirt", remove);
 
-        WebElement producto =  driver.findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-bolt-t-shirt']"));
 
-        Assert.assertEquals("ERROR: El producto no fue borrado", producto, inventoryPage.getNumbInBadge());
+        Assert.assertFalse("ERROR: El producto no fue borrado", InventoryPage.isElementPresent());
     }
 
-
+    //Borar Producto Carrito
     @Test
     public void deleteProductCarrito() {
         // Step 1 - Agregar al carrito 2 productos elegidos al azar
@@ -158,59 +149,41 @@ public class Inventario {
         List <WebElement> productosCarritoDespues = driver.findElements(By.xpath("//div[@class='cart_item']"));
         Assert.assertNotEquals("ERROR: El producto no se ha eliminado del carrito.", productosCarritoAntes.size(), productosCarritoDespues.size());
     }
+    //Añadir 3 productos al carrito
     @Test
     public void add3Carrito(){
 
 
-        //Saco un numero random con Set
-        Random rand = new Random();
-        Set<Integer> set = new HashSet<Integer>();
+        //Cantidad a introducir de numeros aleatorios
+        int []numerosAleatorios = inventoryPage.generarNumerosAleatoriosUnicos(3);
 
-        while (set.size() < 3) {
-            int randomNumber = rand.nextInt(6) + 1;
-            if (!set.contains(randomNumber)) {
-                set.add(randomNumber);
-            }
-        }
-
-        //Almaceno el numero ramdon en 3 variables para realizar la compra
-        int item1 = 0, item2 = 0, item3 = 0;
-        int i = 1;
-        for (int num : set) {
-            if (i == 1) {
-                item1 = num;
-            } else if (i == 2) {
-                item2 = num;
-            } else {
-                item3 = num;
-            }
-            i++;
-        }
+        // Almacenar el numero de la posicion que quieres extraer de la funcion
+        int num1= numerosAleatorios[0];
+        int num2= numerosAleatorios[1];
+        int num3= numerosAleatorios[2];
 
         //Paso 3 Selecciono los items con los 3 numeros random
-        WebElement buttonAdd = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +item1 +"]"+"//button[contains(@name, 'add-to-car')]"));
+        WebElement buttonAdd = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +num1 +"]"+"//button[contains(@name, 'add-to-car')]"));
         buttonAdd.click();
 
-        WebElement buttonAdd2 = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +item2 +"]"+"//button[contains(@name, 'add-to-car')]"));
+        WebElement buttonAdd2 = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +num2 +"]"+"//button[contains(@name, 'add-to-car')]"));
         buttonAdd2.click();
 
-        WebElement buttonAdd3 = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +item3 +"]"+"//button[contains(@name, 'add-to-car')]"));
+        WebElement buttonAdd3 = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +num3 +"]"+"//button[contains(@name, 'add-to-car')]"));
         buttonAdd3.click();
 
 
-        String carrito = driver.findElement(By.xpath("//span[@class='shopping_cart_badge']")).getText();
+        //Paso 4 compruebo que esten  los 3 items
+
+        String expectedCartNumber = "3";
+        Assert.assertEquals("ERROR: number of products in cart does not match the expected number", expectedCartNumber, inventoryPage.getNumbInBadge());
 
 
-
-            //Paso 4 compruebo que esten  los 3 items
-            String carritoCorrecto = "3";
-
-            Assert.assertEquals( "Error, la cantidad no corresponde con el carrito ",carritoCorrecto,carrito);
 
 
 
     }
-
+    //Ordenar AZ
     @Test
     public void AZ(){
 
@@ -234,7 +207,7 @@ public class Inventario {
 
 
     }
-
+    //Ordenar ZA
     @Test
     public void ZA(){
 
@@ -259,7 +232,7 @@ public class Inventario {
 
     }
 
-
+    //Ordenar Low High
     @Test
     public void lowHigh(){
 
@@ -280,7 +253,7 @@ public class Inventario {
         Assert.assertEquals("Error: NO COINCIDEN LOS PRECIOS ", sortedProductPriceValues, productPriceValues);
 
     }
-
+    //Ordenar HighLow
     @Test
     public void highLow(){
 

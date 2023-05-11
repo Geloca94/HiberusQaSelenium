@@ -14,22 +14,29 @@ public class InventoryPage extends AbstractPage {
 
     public static final String PAGE_URL = "https://www.saucedemo.com/inventory.html";
 
+    //Menu
     @FindBy(id = "react-burger-menu-btn")
     private WebElement openMenu;
+    //Link del carrito
     @FindBy(className = "shopping_cart_link")
     private WebElement shoppingCartElement;
+    //numero del carrito
     @FindBy(className = "shopping_cart_badge")
-    private WebElement shoppingCartBadge;
+    private static WebElement shoppingCartBadge;
+    //Item
     @FindBy(className = "inventory_item")
     private List<WebElement> inventoryItemElement;
-    @FindBy(className = "inventoryItemElement")
-    private List<WebElement> listaInventory;
+    //Nombre del Item
+    @FindBy(className = "inventory_item_name")
+    private List<WebElement> inventorIemElementName;
+    //Ordenar productos
     @FindBy(className = "product_sort_container")
     private WebElement productSortContainerSelect;
+    //Opciones de ordenar productos
     @FindBy(xpath = "//select[@class= 'product_sort_container']/option")
     private List<WebElement> options;
-    @FindBy(xpath = "//div[@class='inventory_item_")
-    private List<WebElement> productoPrecios;
+
+
 
 
 
@@ -43,7 +50,7 @@ public class InventoryPage extends AbstractPage {
         return shoppingCartElement;
     }
 
-
+    /*----------------FUNCIONES AÑADIR O BORRAR-----------------*/
     public void addOrRemoveItemToCartByName(String itemName, String action ) {
         try {
             String itemNameReplaced = itemName.replace(" ","-");
@@ -55,6 +62,10 @@ public class InventoryPage extends AbstractPage {
         }
     }
 
+
+    /*----------------FUNCIONES CARRITO-----------------*/
+
+    //FUNCION PARA COGER EL NUMERO QUE SE MARCA EN EL CARRITO
     public String getNumbInBadge(){
 
         String cantidadCarrito= null;
@@ -66,7 +77,16 @@ public class InventoryPage extends AbstractPage {
         return cantidadCarrito;
     }
 
+    //FUNCION PARA SABER SI EL CARRITO TIENE O NO PRODUCTOS
+    public static boolean isElementPresent() {
+        try {
+            return shoppingCartBadge.isDisplayed();
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
 
+    //FUNCION PARA CONTAR LA CANIDAD DE LA LISTA DE INVENTARIO
     public int contarCantidadLista( ) {
 
         int cantidad = inventoryItemElement.size();
@@ -75,29 +95,42 @@ public class InventoryPage extends AbstractPage {
 
     }
 
+    //FUNCION PARA GENERAR NUMERO ALEATORIO
+    public static int[] generarNumerosAleatoriosUnicos(int cantidad)  {
+        int[] numerosAleatorios = new int[cantidad];
+        Set<Integer> numerosSet = new HashSet<>();
+        Random random = new Random();
 
-
-    public void removeItemToCartByName(String itemName) {
-        try {
-            String itemNameReplaced = itemName.replace(" ","-");
-            String itemNameLowerCase = itemNameReplaced.toLowerCase();
-            WebElement removeItemButton = getDriver().findElement(By.xpath("//div[@class='inventory_item_price']/button[@id='remove-to-cart-" + itemNameLowerCase + "']"));
-            removeItemButton.click();
-        } catch (TimeoutException timeoutException) {
-            log.info("Timeout remove item " + itemName + " to cart: " + timeoutException.getClass().getSimpleName());
+        while (numerosSet.size() < cantidad) {
+            //6 + 1 PORQUE SI NO TE COGE DEL 0 A 5
+            numerosSet.add(random.nextInt(6) + 1);
         }
+
+        int i = 0;
+        for (int numero : numerosSet) {
+            numerosAleatorios[i++] = numero;
+        }
+
+        return numerosAleatorios;
     }
 
-    public void clickOnShoppingCart(){
-        log.info("ShopiingCart in...");
-        try{
-            shoppingCartElement.click();
-        }catch (TimeoutException timeoutException){
-            log.info("Timeout clicking ShoppingCart: " + timeoutException.getClass().getSimpleName());
+    //FUNCION PARA COMPROBAR QUE EL PRODUCTO ESTA EN EL CARRITO
+
+    public boolean porductoCarrito(String productoEsperado){
+        boolean isPresent = false;
+
+        for(int i = 0; i < inventorIemElementName.size(); i++){
+
+            if( inventorIemElementName.get(i).getText().equals(productoEsperado)){
+                isPresent = true;
+            }
         }
+
+        return isPresent;
     }
 
-    //Funciones para Ordenar el Inventario y Almacenarlo
+
+    /*----------------FUNCIONES ORDENAR-----------------*/
     public void sortInventoryByNameAsc(){
         log.info("Ascendant Click...");
         try{
@@ -142,12 +175,15 @@ public class InventoryPage extends AbstractPage {
 
     }
 
+    //FUNCION PARA SELECCIONAR LA OPCION
     public List<WebElement> selectLista(String option){
 
         List<WebElement> producto = getDriver().findElements(By.xpath("//div[@class='inventory_item_" + option + "']"));
 
         return producto;
     }
+
+    //FUNCION PARA ALMACENAR LA LISA DE PRECIOS PARA ORDENAR
 
     public List<Double> almacenListaPrecio(List<WebElement> producto){
 
@@ -160,6 +196,7 @@ public class InventoryPage extends AbstractPage {
         return productPriceValues;
     }
 
+    //FUNCION PARA ALMACENAR LA LISA DE NOMBRES PARA ORDENAR
     public List<String> almacenListaNombre(List<WebElement> producto){
 
         List<String> stringName = new ArrayList<String>();
@@ -172,22 +209,7 @@ public class InventoryPage extends AbstractPage {
         return stringName;
     }
 
-    public static int[] generarNumerosAleatoriosUnicos(int cantidad) {
-        int[] numerosAleatorios = new int[cantidad];
-        Set<Integer> numerosSet = new HashSet<>();
-        Random random = new Random();
 
-        while (numerosSet.size() < cantidad) {
-            numerosSet.add(random.nextInt());
-        }
-
-        int i = 0;
-        for (int numero : numerosSet) {
-            numerosAleatorios[i++] = numero;
-        }
-
-        return numerosAleatorios;
-    }
 
 
 
