@@ -6,7 +6,7 @@ Feature: Iventory Test Suite
     And the user provide the username "standar_user" and password "secret_sauce"
     And the user clicks the login button
 
-  @ValityNumberProducts
+  @VerifyProducts
     Given the user is on the home page "https://www.saucedemo.com/inventory.html"
     When the inventory page is displayed
     Then the user checks that 6 products are displayed in the inventory.
