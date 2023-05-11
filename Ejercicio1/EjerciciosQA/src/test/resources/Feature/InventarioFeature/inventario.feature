@@ -3,7 +3,7 @@ Feature: Iventory Test Suite
 
   Background: Do Login
     Given the user is on home page
-    And the user provide the username "standar_user" and password "secret_sauce"
+    And  the user provide the username "standard_user" and password "secret_sauce"
     And the user clicks the login button
 
   @VerifyProducts
