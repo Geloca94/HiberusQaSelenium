@@ -16,8 +16,8 @@ Then el usuario se encuentra con un mensaje de error
 CDP 3 -Hay 6 Prductos-
 
 Given el usuario se encuentra en la pagina de inicio "https://www.saucedemo.com/inventory.html"
-When el usuario comprueba que hay 6 productos mostrados
-Then el usuario
+When se muestra la pagina del inventario
+Then el usuario comprueba que se muestran 6 productos en el inventario
 
 CDP 4 -Existe producto-
 
@@ -70,14 +70,7 @@ And el usuario localiza el 'product_sort_container'
 When el usuario selecciona la opcion 'hilo'
 Then el usuario comprueba que los productos se han ordenado de Mayor a Menor
 
-CDP 11 -Eliminar producto desde el carrito
 
-Given el usuario se encuentra en la pagina de inicio "https://www.saucedemo.com/inventory.html"
-And el usuario localiza 'x' producto
-And el usuario hace click en el boton "add to cart" de 'x' producto
-And el usuario hace click en el boton del carrito
-When el usuario hace click en el boton "Remove" de 'x' productos
-Then el usuario comprueba que los productos ya no aparecen en el carrito
 
 CDP 12 -Comprueba el precio final del CheckOut
 
