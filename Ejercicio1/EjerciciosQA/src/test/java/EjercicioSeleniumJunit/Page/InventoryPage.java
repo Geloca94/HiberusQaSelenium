@@ -102,6 +102,7 @@ public class InventoryPage extends AbstractPage {
         Random random = new Random();
 
         while (numerosSet.size() < cantidad) {
+            //6 + 1 PORQUE SI NO TE COGE DEL 0 A 5
             numerosSet.add(random.nextInt(6) + 1);
         }
 
