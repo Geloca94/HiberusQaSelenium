@@ -77,7 +77,6 @@ public class Inventario {
         boolean isPresent = inventoryPage.porductoCarrito(camisetaEsperada);
 
 
-
         Assert.assertTrue("Error el producto no existe: ", isPresent);
 
     }

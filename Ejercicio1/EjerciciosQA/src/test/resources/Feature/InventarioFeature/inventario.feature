@@ -7,45 +7,48 @@ Feature: Iventory Test Suite
     And the user clicks the login button
 
   @VerifyProducts
-    Given the user is on the home page "https://www.saucedemo.com/inventory.html"
-    When the inventory page is displayed
-    Then the user checks that 6 products are displayed in the inventory.
+  Scenario Outline: VerifyProducts
 
+    When the inventory page is displayed
+    Then the user checks that "<item>" products are displayed in the inventory.
+
+    Examples:
+    |item|
+    |6   |
 
   @Productexists
-    Given the user is on the home page "https://www.saucedemo.com/inventory.html"
-    And the user locates the product "Sauce Labs Bolt T-shirt"
-    Then the user checks that the product is in the inventory.
+  Scenario Outline: Product Exists
 
-  @addProduc
-    Given the user is on the home page "https://www.saucedemo.com/inventory.html"
-    And the user locates the product "Sauce Labs Bolt T-shirt"
-    When the user clicks on the "add to cart" button
+    When the inventory page is display
+    Then the user checks that the "<product>" is in the inventory.
+
+    Examples:
+      | product                   |
+      | Sauce Labs Bolt T-Shirt   |
+
+
+  @addProduct
+  Scenario: add Product
+
+    When the user clicks on the add to cart button for the product Sauce Labs Bolt T-shirt
     Then the user checks that the product is in the cart.
 
   @RemoveProduct
-    Given the user is on the home page "https://www.saucedemo.com/inventory.html"
-    And the user locates the product "Sauce Labs Bolt T-shirt"
-    And the user clicks on the "add to cart" button
-    And the user checks that the product is in the cart
-    When the user clicks on the "remove" button
+  Scenario: RemoveProduct
+
+    And the user clicks on the add to cart button
+    And the user checks thats the product is in the cart
+    When the user clicks on the remove button
     Then the user checks that the product is no longer in the cart.
 
-  @Add'x'Products
-    Given the user is on the home page "https://www.saucedemo.com/inventory.html"
-    And the user locates 'x' product
-    When the user clicks on the "add to cart" button of 'x' product
-    Then the user checks that the cart icon displays a number equivalent to the 'x' selected products.
+  @AddxProducts
+  Scenario: Add x Products
+
+    When the user clicks on the add to cart button of x product
+    Then the user checks that the cart icon displays a number equivalent to the x selected products.
 
   @SortZ-AProducts
-  Scenario Outline:: Sort Products
-    Given the user is on the home page "https://www.saucedemo.com/inventory.html"
-    And the user locates the 'product_sort_container'
-    When the user selects the 'Z-A' 'lohi' 'hilo' 'A-Z' option
+  Scenario: Sort Products ZA
+    When the user locates the product_sort_container
+    Then the user selects the ZA option
 
-    Examples:
-      | sort |
-      | A-Z  |
-      | Z-A  |
-      | lohi |
-      | hilo |
