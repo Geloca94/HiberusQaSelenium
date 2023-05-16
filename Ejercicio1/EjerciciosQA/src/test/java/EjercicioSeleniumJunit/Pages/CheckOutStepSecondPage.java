@@ -1,6 +1,7 @@
 package EjercicioSeleniumJunit.Pages;
 
 import lombok.extern.slf4j.Slf4j;
+import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -23,6 +24,9 @@ public class CheckOutStepSecondPage extends AbstractPage {
 
 
 
+
+
+
     CheckOutStepSecondPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
@@ -33,13 +37,24 @@ public class CheckOutStepSecondPage extends AbstractPage {
         return finishButton;
     }
 
-    public void getItemtotal(){
 
-         String itemTotalText = itemTotalElement.getText();
 
-        double itemTotalDouble = Double.parseDouble(itemTotalText.replace("Item total: $",""));
+
+    public double tranformarStringDouble (){
+
+        double subTotalDouble = 0.0;
+
+        try{
+            String subTotalCompra = itemTotalElement.getText();
+             subTotalDouble = Double.parseDouble(subTotalCompra.replace("Item total: $",""));
+
+        }catch (TimeoutException timeoutException){
+            log.info("Timeout clicking Finish: " + timeoutException.getClass().getSimpleName());
+        }
+
+
+        return subTotalDouble;
     }
-
     public void getTax(){
         String taxText = taxElement.getText();
 

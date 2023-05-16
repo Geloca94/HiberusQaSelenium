@@ -1,5 +1,6 @@
 package EjercicioSeleniumJunit.CheckOut;
 
+import EjercicioSeleniumJunit.Pages.*;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Assert;
@@ -23,6 +24,11 @@ public class CheckOut {
     WebDriverWait wait;
     String url = "https://www.saucedemo.com/";
 
+    InventoryPage inventoryPage;
+    CheckOutStepOnePage checkOutStepOnePage;
+    CheckOutStepSecondPage checkOutStepSecondPage;
+    CartPage cartPage;
+    LoginPage loginPage;
 
     @Before
     public void setUp(){
@@ -39,21 +45,22 @@ public class CheckOut {
         wait = new WebDriverWait(driver, 5);
 
 
-        driver.get(url);
+        PagesFactory.start(driver);
+        driver.get(InventoryPage.PAGE_URL);
+        PagesFactory pagesFactory = PagesFactory.getInstance();
 
-        //loginAceso.Acceso();
 
-        //USER
-        WebElement username = driver.findElement(By.xpath("//input[@data-test='username']"));
-        username.sendKeys("standard_user");
+        inventoryPage = pagesFactory.getInventoryPage();
+        checkOutStepOnePage = pagesFactory.getCheckOutStepOnePage();
+        checkOutStepSecondPage = pagesFactory.getCheckOutStepSecondPage();
+        cartPage = pagesFactory.getCartPage();
 
-        //CONTRA
-        WebElement password = driver.findElement(By.xpath("//input[@data-test='password']"));
-        password.sendKeys("secret_sauce");
+        loginPage = pagesFactory.getLoginPage();
+        loginPage.enterUsername("standard_user");
+        loginPage.enterPassword("secret_sauce");
+        loginPage.clickLogin();
 
-        //BOTON
-        WebElement buttonLogin = driver.findElement(By.xpath("//input[@data-test='login-button']"));
-        buttonLogin.click();
+
 
 
     }
@@ -62,31 +69,12 @@ public class CheckOut {
     @Test
     public void ComprobarPedido(){
 
+        int []numerosAleatorios = InventoryPage.generarNumerosAleatoriosUnicos(3);
 
-        //Saco un numero random con Set
-        Random rand = new Random();
-        Set<Integer> set = new HashSet<Integer>();
-
-        while (set.size() < 3) {
-            int randomNumber = rand.nextInt(6) + 1;
-            if (!set.contains(randomNumber)) {
-                set.add(randomNumber);
-            }
-        }
-
-        //Almaceno el numero ramdon en 3 variables para realizar la compra
-        int item1 = 0, item2 = 0, item3 = 0;
-        int i = 1;
-        for (Integer num : set) {
-            if (i == 1) {
-                item1 = num;
-            } else if (i == 2) {
-                item2 = num;
-            } else {
-                item3 = num;
-            }
-            i++;
-        }
+        // Almacenar el numero de la posicion que quieres extraer de la funcion
+        int item1= numerosAleatorios[0];
+        int item2= numerosAleatorios[1];
+        int item3= numerosAleatorios[2];
 
         //Paso 3 Selecciono los items con los 3 numeros random
         WebElement buttonAdd = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +item1 +"]"+"//button[contains(@name, 'add-to-cart')]"));
@@ -110,73 +98,68 @@ public class CheckOut {
         double total = num1+num2+num3;
 
         //Paso 5
-        WebElement carritolink = driver.findElement(By.xpath("//a[@class='shopping_cart_link']"));
-        carritolink.click();
+       inventoryPage.clickCartLink();
 
 
         //paso 7
-        WebElement checkout = driver.findElement(By.xpath("//button[@id='checkout']"));
-        checkout.click();
+        cartPage.clickCheckOut();
 
         //paso 8 Rellenar Datos
-        WebElement firstName = driver.findElement(By.xpath("//input[@id='first-name']"));
-        firstName.sendKeys("El PEPE");
-        WebElement lastName = driver.findElement(By.xpath("//input[@id='last-name']"));
-        lastName.sendKeys("Luis");
-        WebElement postal = driver.findElement(By.xpath("//input[@id='postal-code']"));
-        postal.sendKeys("35025");
+
+        checkOutStepOnePage.enterFirstName("PEPE");
+        checkOutStepOnePage.enterLastName("Luis");
+        checkOutStepOnePage.enterPostalCode("9999");
+
+
 
         //paso 9 Continuar
-        WebElement continuar = driver.findElement(By.xpath("//input[@id='continue']"));
-        continuar.click();
+        checkOutStepOnePage.clicContinue();
 
-        String subTotalCompra = driver.findElement(By.xpath("//div[@class='summary_subtotal_label']")).getText();
-        double subTotalDouble = Double.parseDouble(subTotalCompra.replace("Item total: $",""));
-
-        //Correcion para que la comparacion no de error
-        int limitador = 0;
+        double subTotalDouble = checkOutStepSecondPage.tranformarStringDouble();
 
 
-            Assert.assertEquals("ERROR: EL PRECIO ES INCORRECTO ", subTotalDouble,total, limitador);
+            Assert.assertEquals("ERROR: EL PRECIO ES INCORRECTO ", subTotalDouble,total, 0);
 
     }
 
     @Test
     public void realizarPedido(){
 
-        //Paso 1
-        Random rand = new Random();
-        int random = rand.nextInt(6) + 1;
+        int []numerosAleatorios = InventoryPage.generarNumerosAleatoriosUnicos(3);
 
+        // Almacenar el numero de la posicion que quieres extraer de la funcion
+        int item1= numerosAleatorios[0];
+        int item2= numerosAleatorios[1];
+        int item3= numerosAleatorios[2];
 
-        WebElement buttonAdd = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +random +"]"+"//button[contains(@name, 'add-to-car')]"));
+        //Paso 3 Selecciono los items con los 3 numeros random
+        WebElement buttonAdd = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +item1 +"]"+"//button[contains(@name, 'add-to-cart')]"));
         buttonAdd.click();
+
+        WebElement buttonAdd2 = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +item2 +"]"+"//button[contains(@name, 'add-to-cart')]"));
+        buttonAdd2.click();
+
+        WebElement buttonAdd3 = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +item3 +"]"+"//button[contains(@name, 'add-to-cart')]"));
+        buttonAdd3.click();
 
 
         //Paso 2
-        WebElement carritolink = driver.findElement(By.xpath("//a[@class='shopping_cart_link']"));
-        carritolink.click();
+        inventoryPage.clickCartLink();
 
 
         //paso 3
-        WebElement checkout = driver.findElement(By.xpath("//button[@id='checkout']"));
-        checkout.click();
+        cartPage.clickCheckOut();
 
         //paso 4 Rellenar Datos
-        WebElement firstName = driver.findElement(By.xpath("//input[@id='first-name']"));
-        firstName.sendKeys("El PEPE");
-        WebElement lastName = driver.findElement(By.xpath("//input[@id='last-name']"));
-        lastName.sendKeys("Luis");
-        WebElement postal = driver.findElement(By.xpath("//input[@id='postal-code']"));
-        postal.sendKeys("33025");
+        checkOutStepOnePage.enterFirstName("PEPE");
+        checkOutStepOnePage.enterLastName("Luis");
+        checkOutStepOnePage.enterPostalCode("9999");
 
         //paso 5 Continuar
-        WebElement continuar = driver.findElement(By.xpath("//input[@id='continue']"));
-        continuar.click();
+        checkOutStepOnePage.clicContinue();
 
         //Paso 6 Finalizar compra
-        WebElement finalizar = driver.findElement(By.xpath("//button[@id='finish']"));
-        finalizar.click();
+        checkOutStepSecondPage.clickFinish();
 
         //Paso 7 obtener texto
         String completo = driver.findElement(By.xpath("//div[@class='complete-text']")).getText();

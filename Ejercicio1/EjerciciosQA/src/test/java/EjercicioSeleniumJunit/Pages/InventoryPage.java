@@ -50,6 +50,10 @@ public class InventoryPage extends AbstractPage {
         return shoppingCartElement;
     }
 
+
+    
+
+
     /*----------------FUNCIONES AÑADIR O BORRAR-----------------*/
     public void addOrRemoveItemToCartByName(String itemName, String action ) {
         try {
@@ -84,6 +88,10 @@ public class InventoryPage extends AbstractPage {
         } catch (NoSuchElementException e) {
             return false;
         }
+    }
+
+    public void clickCartLink (){
+        shoppingCartElement.click();
     }
 
     //FUNCION PARA CONTAR LA CANIDAD DE LA LISTA DE INVENTARIO
@@ -208,6 +216,7 @@ public class InventoryPage extends AbstractPage {
 
         return stringName;
     }
+
 
 
 

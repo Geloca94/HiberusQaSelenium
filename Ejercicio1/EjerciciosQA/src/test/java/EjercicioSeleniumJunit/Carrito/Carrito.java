@@ -19,9 +19,6 @@ import java.util.concurrent.TimeUnit;
 
 public class Carrito {
 
-
-
-
     WebDriver driver;
     WebDriverWait wait;
     String url = "https://www.saucedemo.com/";

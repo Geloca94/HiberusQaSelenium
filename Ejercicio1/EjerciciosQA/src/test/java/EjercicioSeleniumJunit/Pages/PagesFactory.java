@@ -1,5 +1,6 @@
 package EjercicioSeleniumJunit.Pages;
 
+import EjercicioSeleniumJunit.CheckOut.CheckOut;
 import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 
@@ -18,6 +19,7 @@ public class PagesFactory {
     private final InventoryItemPage inventoryItemPage;
     private final InventoryPageJhonatan inventoryPageJhonatan;
 
+
     private PagesFactory(WebDriver driver){
         this.driver = driver;
         //Initilizar nuestras Pages
@@ -28,6 +30,7 @@ public class PagesFactory {
         inventoryPage = new InventoryPage(driver);
         inventoryItemPage = new InventoryItemPage(driver);
         inventoryPageJhonatan = new InventoryPageJhonatan(driver);
+
     }
 
     public static void start(WebDriver driver){

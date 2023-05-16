@@ -121,7 +121,7 @@ public class Inventario {
         Assert.assertFalse("ERROR: El producto no fue borrado", InventoryPage.isElementPresent());
     }
 
-    //Borar Producto Carrito
+    //Borrar Producto Carrito
     @Test
     public void deleteProductCarrito() {
         // Step 1 - Agregar al carrito 2 productos elegidos al azar

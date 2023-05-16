@@ -6,16 +6,16 @@ import EjercicioSeleniumJunit.Pages.PagesFactory;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import static EjercicioSeleniumJunit.Support.Hooks.driver;
-
+@Slf4j
 public class InventarioPageSteps {
 
     InventoryPage inventoryPage = PagesFactory.getInstance().getInventoryPage();
