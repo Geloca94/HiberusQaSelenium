@@ -17,6 +17,8 @@ public class InventoryPage extends AbstractPage {
     //Menu
     @FindBy(id = "react-burger-menu-btn")
     private WebElement openMenu;
+    @FindBy(id= "logout_sidebar_link")
+    private WebElement logoutButton;
     //Link del carrito
     @FindBy(className = "shopping_cart_link")
     private WebElement shoppingCartElement;
@@ -92,6 +94,26 @@ public class InventoryPage extends AbstractPage {
 
     public void clickCartLink (){
         shoppingCartElement.click();
+    }
+
+    public void clickMenuOut(){
+        log.info("Open Menu in...");
+        try{
+        openMenu.click();
+
+        }catch (TimeoutException timeoutException){
+            log.info("Timeout clicking menu: " + timeoutException.getClass().getSimpleName());
+        }
+        log.info("Click Logout in...");
+        try{
+
+            logoutButton.click();
+
+        }catch (TimeoutException timeoutException){
+            log.info("Timeout clicking logout: " + timeoutException.getClass().getSimpleName());
+        }
+
+
     }
 
     //FUNCION PARA CONTAR LA CANIDAD DE LA LISTA DE INVENTARIO

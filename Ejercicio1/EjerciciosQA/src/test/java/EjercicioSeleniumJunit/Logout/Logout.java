@@ -1,30 +1,28 @@
 package EjercicioSeleniumJunit.Logout;
 
+import EjercicioSeleniumJunit.Pages.InventoryPage;
+import EjercicioSeleniumJunit.Pages.LoginPage;
+import EjercicioSeleniumJunit.Pages.PagesFactory;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
 
 public class Logout {
 
     WebDriver driver;
-    WebDriverWait wait;
-    String url = "https://www.saucedemo.com/";
+    LoginPage loginPage;
+    InventoryPage inventoryPage;
 
 
     @Before
     public void setUp(){
-
-
 
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
@@ -33,44 +31,26 @@ public class Logout {
         driver.manage().deleteAllCookies();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.manage().window().maximize();
+        PagesFactory.start(driver);
+        driver.get(InventoryPage.PAGE_URL);
+        PagesFactory pagesFactory = PagesFactory.getInstance();
 
-        wait = new WebDriverWait(driver, 5);
+        inventoryPage = pagesFactory.getInventoryPage();
 
-
-        driver.get(url);
-
-        //loginAceso.Acceso();
-
-        //USER
-        WebElement username = driver.findElement(By.xpath("//input[@data-test='username']"));
-        username.sendKeys("standard_user");
-
-        //CONTRA
-        WebElement password = driver.findElement(By.xpath("//input[@data-test='password']"));
-        password.sendKeys("secret_sauce");
-
-        //BOTON
-        WebElement buttonLogin = driver.findElement(By.xpath("//input[@data-test='login-button']"));
-        buttonLogin.click();
-
+        //Acceso a la PAgina
+        loginPage = pagesFactory.getLoginPage();
+        loginPage.enterUsername("standard_user");
+        loginPage.enterPassword("secret_sauce");
+        loginPage.clickLogin();
 
     }
 
     @Test
-    public void logout(){
-        WebElement menuButton = driver.findElement(By.xpath("//button[@id='react-burger-menu-btn']"));
-        menuButton.click();
-        //AÑADIR un wait element
-        WebElement logoutButton = driver.findElement(By.xpath("//a[@id='logout_sidebar_link']"));
+    public void logout()  {
 
-        logoutButton.click();
-
-        String paginaEsperada =  "https://www.saucedemo.com/";
-        String paginaActual = driver.getCurrentUrl();
-
-
-            Assert.assertEquals("ERROR: NO COINCIDE LA PAGINA ",paginaEsperada, paginaActual);
-
+        inventoryPage.clickMenuOut();
+        Assert.assertEquals("ERROR: La pagina no corresponde con la esperada",
+                LoginPage.PAGE_URL, driver.getCurrentUrl());
     }
 
     @After
