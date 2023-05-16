@@ -136,7 +136,7 @@ public class Inventario {
         addToCartButtons.get(random2).click();
 
         // Step 2 - Ir al carrito
-        driver.findElement(By.xpath("//a[@class='shopping_cart_link']")).click();
+        inventoryPage.clickCartLink();
         List <WebElement> productosCarritoAntes = driver.findElements(By.xpath("//div[@class='cart_item']"));
         // Step 3 - Eliminar uno de los productos
         String numProducts = driver.findElement(By.xpath("//span[@class='shopping_cart_badge']")).getText();
@@ -154,7 +154,7 @@ public class Inventario {
 
 
         //Cantidad a introducir de numeros aleatorios
-        int []numerosAleatorios = inventoryPage.generarNumerosAleatoriosUnicos(3);
+        int []numerosAleatorios = InventoryPage.generarNumerosAleatoriosUnicos(3);
 
         // Almacenar el numero de la posicion que quieres extraer de la funcion
         int num1= numerosAleatorios[0];

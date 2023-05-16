@@ -8,7 +8,7 @@ Feature: Iventory Test Suite
 
   @CheckOutFinalPriceVerification
   Scenario Outline:: Check Out Final Price Verification
-    #Given the inventor page is displayed
+    Given the user is in page inventory
     And the user clicks on the add to cart button of product
     And the user clicks on the cart button
     And the user clicks on the CheckOut button
@@ -24,7 +24,7 @@ Feature: Iventory Test Suite
 
   @PlaceOrder
   Scenario Outline::Place Order
-
+    Given the user is in page inventory
     And the user clicks on the add to cart button of product
     And the user clicks on the cart button
     And the user clicks on the CheckOut button

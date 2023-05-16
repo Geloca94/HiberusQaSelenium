@@ -1,5 +1,8 @@
 package EjercicioSeleniumJunit.Carrito;
 
+import EjercicioSeleniumJunit.Pages.InventoryPage;
+import EjercicioSeleniumJunit.Pages.LoginPage;
+import EjercicioSeleniumJunit.Pages.PagesFactory;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Assert;
@@ -20,8 +23,8 @@ import java.util.concurrent.TimeUnit;
 public class Carrito {
 
     WebDriver driver;
-    WebDriverWait wait;
-    String url = "https://www.saucedemo.com/";
+    LoginPage loginPage;
+    InventoryPage inventoryPage;
 
 
     @Before
@@ -35,25 +38,18 @@ public class Carrito {
         driver.manage().deleteAllCookies();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.manage().window().maximize();
+        PagesFactory.start(driver);
+        driver.get(InventoryPage.PAGE_URL);
+        PagesFactory pagesFactory = PagesFactory.getInstance();
 
-        wait = new WebDriverWait(driver, 5);
+        inventoryPage = pagesFactory.getInventoryPage();
 
 
-        driver.get(url);
-
-        //loginAceso.Acceso();
-
-        //USER
-        WebElement username = driver.findElement(By.xpath("//input[@data-test='username']"));
-        username.sendKeys("standard_user");
-
-        //CONTRA
-        WebElement password = driver.findElement(By.xpath("//input[@data-test='password']"));
-        password.sendKeys("secret_sauce");
-
-        //BOTON
-        WebElement buttonLogin = driver.findElement(By.xpath("//input[@data-test='login-button']"));
-        buttonLogin.click();
+        //Acceso a la PAgina
+        loginPage = pagesFactory.getLoginPage();
+        loginPage.enterUsername("standard_user");
+        loginPage.enterPassword("secret_sauce");
+        loginPage.clickLogin();
 
 
     }
@@ -63,60 +59,45 @@ public class Carrito {
     public void carrito(){
 
         //Saco un numero random con Set
-        Random rand = new Random();
-        Set<Integer> set = new HashSet<Integer>();
-
-        while (set.size() < 3) {
-            int randomNumber = rand.nextInt(6) + 1;
-            if (!set.contains(randomNumber)) {
-                set.add(randomNumber);
-            }
-        }
-
-        //Almaceno el numero ramdon en 3 variables para realizar la compra
-        int item1 = 0, item2 = 0;
-        int i = 1;
-        for (Integer num : set) {
-            if (i == 1) {
-                item1 = num;
-            } else {
-                item2 = num;
-            }
-            i++;
-        }
+        int []numerosAleatorios = InventoryPage.generarNumerosAleatoriosUnicos(2);
+        // Almacenar el numero de la posicion que quieres extraer de la funcion
+        int num1= numerosAleatorios[0];
+        int num2= numerosAleatorios[1];;
 
         //Paso 1
-        WebElement buttonAdd = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +item1 +"]"+"//button[contains(@name, 'add-to-cart')]"));
+        WebElement buttonAdd = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +num1 +"]"+"//button[contains(@name, 'add-to-cart')]"));
         buttonAdd.click();
-        WebElement buttonAdd2 = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +item2 +"]"+"//button[contains(@name, 'add-to-cart')]"));
+        WebElement buttonAdd2 = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +num2 +"]"+"//button[contains(@name, 'add-to-cart')]"));
         buttonAdd2.click();
 
        // List <WebElement> carritoVacio = driver.findElements();
 
         //Paso 2
-        WebElement carritolink = driver.findElement(By.xpath("//a[@class='shopping_cart_link']"));
-        carritolink.click();
+        inventoryPage.clickCartLink();
 
-        String carrito = driver.findElement(By.xpath("//span[@class='shopping_cart_badge']")).getText();
+        String carrito = inventoryPage.getNumbInBadge();
 
         //Paso 3
         String carritoCorrectoAntes = "2";
         Assert.assertEquals("ERROR: La cantidad es incorrecta, cantidad obtenida:" ,carritoCorrectoAntes,carrito);
 
 
+        int []posicionAleatoria = InventoryPage.generarNumerosAleatoriosEntre1y2(1);
+        int pos1= posicionAleatoria[0];
         //paso 4
-        WebElement remove = driver.findElement(By.xpath("//div[@class='inventory_item']"+"[" +item1 +"]"+"//button[contains(@name, 'remove')]"));
+        WebElement remove = driver.findElement(By.xpath("//div[@class='cart_item_label']"+"[" +pos1 +"]"+"//button[contains(@name, 'remove')]"));
         remove.click();
 
         //List<WebElement> nombreProducto = driver.findElements(By.xpath("//div[@class='inventory_item_name']"));
 
-        carrito = driver.findElement(By.xpath("//span[@class='shopping_cart_badge']")).getText();
+        carrito =inventoryPage.getNumbInBadge();
 
 
         //Paso 5
         String carritoCorrectoDespues = "1";
 
         Assert.assertEquals("ERROR: La cantidad es incorrecta, cantidad obtenida: ", carritoCorrectoDespues,carrito);
+
 
 
 

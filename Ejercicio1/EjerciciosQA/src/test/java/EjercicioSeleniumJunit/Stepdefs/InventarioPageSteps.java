@@ -4,6 +4,7 @@ import EjercicioSeleniumJunit.Pages.InventoryPage;
 import EjercicioSeleniumJunit.Pages.LoginPage;
 import EjercicioSeleniumJunit.Pages.PagesFactory;
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,13 @@ public class InventarioPageSteps {
     String remove =  "remove";
     String nombre = "name";
 
+
+    @Given("the user is in page inventory")
+    public void theUserIsInPageInventory() {
+        log.info("The user is on the home page");
+        inventoryPage.navigateTo(InventoryPage.PAGE_URL);
+
+    }
 
     @When("the inventory page is displayed")
     public void theInventoryPageIsDisplayed() {
@@ -142,6 +150,7 @@ public class InventarioPageSteps {
 
         Assert.assertEquals("ERROR: No esta ordenado", nombreZA, productName);
     }
+
 
 
 }

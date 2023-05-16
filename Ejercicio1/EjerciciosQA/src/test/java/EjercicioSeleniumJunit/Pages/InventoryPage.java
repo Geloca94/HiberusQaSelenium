@@ -122,6 +122,24 @@ public class InventoryPage extends AbstractPage {
         return numerosAleatorios;
     }
 
+    public static int[] generarNumerosAleatoriosEntre1y2(int cantidad){
+        int[] numerosAleatorios = new int[cantidad];
+        Set<Integer> numerosSet = new HashSet<>();
+        Random random = new Random();
+
+        while (numerosSet.size() < cantidad) {
+
+            numerosSet.add(random.nextInt(1) + 1);
+        }
+
+        int i = 0;
+        for (int numero : numerosSet) {
+            numerosAleatorios[i++] = numero;
+        }
+
+        return numerosAleatorios;
+    }
+
     //FUNCION PARA COMPROBAR QUE EL PRODUCTO ESTA EN EL CARRITO
 
     public boolean porductoCarrito(String productoEsperado){
