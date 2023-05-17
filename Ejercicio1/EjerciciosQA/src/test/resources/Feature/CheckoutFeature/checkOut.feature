@@ -1,5 +1,5 @@
 @InventorySuite
-Feature: Iventory Test Suite
+Feature: CheckOut Test Suite
 
   Background: Do Login
     Given the user is on home page
