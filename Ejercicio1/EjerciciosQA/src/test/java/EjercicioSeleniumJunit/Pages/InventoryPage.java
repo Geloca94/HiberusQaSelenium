@@ -96,7 +96,7 @@ public class InventoryPage extends AbstractPage {
         shoppingCartElement.click();
     }
 
-    public void clickMenuOut(){
+    public void clickMenuOut() throws InterruptedException {
         log.info("Open Menu in...");
         try{
         openMenu.click();
@@ -104,6 +104,7 @@ public class InventoryPage extends AbstractPage {
         }catch (TimeoutException timeoutException){
             log.info("Timeout clicking menu: " + timeoutException.getClass().getSimpleName());
         }
+        Thread.sleep(2000);
         log.info("Click Logout in...");
         try{
 

@@ -46,7 +46,7 @@ public class Logout {
     }
 
     @Test
-    public void logout()  {
+    public void logout() throws InterruptedException {
 
         inventoryPage.clickMenuOut();
         Assert.assertEquals("ERROR: La pagina no corresponde con la esperada",

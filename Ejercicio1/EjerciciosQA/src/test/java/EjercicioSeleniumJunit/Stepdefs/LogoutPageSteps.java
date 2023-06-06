@@ -16,7 +16,7 @@ public class LogoutPageSteps {
     InventoryPage inventoryPage = PagesFactory.getInstance().getInventoryPage();
 
     @When("the user clicks on the react-burger-menu-btn and clicks on the Logout button")
-    public void theUserClicksOnTheReactBurgerMenuBtnAndClicksOnTheLogoutButton() {
+    public void theUserClicksOnTheReactBurgerMenuBtnAndClicksOnTheLogoutButton() throws InterruptedException {
         inventoryPage.clickMenuOut();
     }
 
