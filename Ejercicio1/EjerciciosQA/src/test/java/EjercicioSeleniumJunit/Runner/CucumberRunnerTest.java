@@ -11,9 +11,9 @@ import org.junit.runner.RunWith;
 @RunWith(Cucumber.class)
 @CucumberOptions(
         plugin = {
-                "pretty",
-                "json:target/surefire-reports/cucumber.json",
-                "html:target/cucumber-html-report",
+                "pretty"
+                //"json:target/surefire-reports/cucumber.json",
+                //"html:target/cucumber-html-report",
         },
         glue = {
                 "EjercicioSeleniumJunit.Stepdefs",
